@@ -50,21 +50,41 @@ export function validateGlobalInputs(
   phaseInputs: Record<string, string> = {}
 ): ValidationError[] {
   const errors: ValidationError[] = [];
-  const globalInputsAsRecord = globalInputs as unknown as Record<
-    string,
-    string
-  >;
+
+  // Convert GlobalInputs to a record for token analysis
+  const globalInputsRecord: Record<string, string> = {
+    PROJECT_NAME: globalInputs.projectName,
+    FEATURE_NAME: globalInputs.featureName,
+    FEATURE_SLUG: globalInputs.featureSlug,
+    OWNER: globalInputs.owner,
+    REPO_URL: globalInputs.repoUrl || "",
+    STACK: globalInputs.stack,
+    DATE_ISO: globalInputs.dateIso,
+  };
+
   const tokenAnalysis = analyzeTokens(
     template,
-    globalInputsAsRecord,
+    globalInputsRecord,
     phaseInputs
   );
 
   // Check for missing global inputs (tokens that appear in template but have no value)
-  tokenAnalysis.missingTokens.forEach((token: string) => {
+  tokenAnalysis.tokens.forEach((token: string) => {
     // Check if this token should be handled by global inputs
-    const globalValue = globalInputs[token as keyof GlobalInputs];
-    if (!globalValue || globalValue.trim() === "") {
+    if (Object.prototype.hasOwnProperty.call(globalInputsRecord, token)) {
+      const globalValue = globalInputsRecord[token];
+      if (!globalValue || globalValue.trim() === "") {
+        const fieldName = getGlobalInputFieldName(token);
+        errors.push(
+          createValidationError(
+            fieldName,
+            token,
+            `Missing required input: ${token}. Please provide a value for ${fieldName}.`
+          )
+        );
+      }
+    } else {
+      // Token is not a global input, report it so phase validation can handle it
       const fieldName = getGlobalInputFieldName(token);
       errors.push(
         createValidationError(
@@ -88,33 +108,38 @@ export function validatePhaseInputs(
   globalInputs: GlobalInputs
 ): ValidationError[] {
   const errors: ValidationError[] = [];
-  const globalInputsAsRecord = globalInputs as unknown as Record<
-    string,
-    string
-  >;
+
+  // Convert GlobalInputs to a record for token analysis
+  const globalInputsRecord: Record<string, string> = {
+    PROJECT_NAME: globalInputs.projectName,
+    FEATURE_NAME: globalInputs.featureName,
+    FEATURE_SLUG: globalInputs.featureSlug,
+    OWNER: globalInputs.owner,
+    REPO_URL: globalInputs.repoUrl || "",
+    STACK: globalInputs.stack,
+    DATE_ISO: globalInputs.dateIso,
+  };
+
   const tokenAnalysis = analyzeTokens(
     template,
-    globalInputsAsRecord,
+    globalInputsRecord,
     phaseInputs
   );
 
   // Check for missing phase inputs (tokens that appear in template but have no value)
   tokenAnalysis.missingTokens.forEach((token: string) => {
-    const globalValue = globalInputs[token as keyof GlobalInputs];
-    const phaseValue = phaseInputs[token];
-
-    // Only validate if it's not a global input and not a phase input
-    if (
-      (!globalValue || globalValue.trim() === "") &&
-      (!phaseValue || phaseValue.trim() === "")
-    ) {
-      errors.push(
-        createValidationError(
-          `phase-input-${token}`,
-          token,
-          `Missing required input: ${token}. Please provide a value for this phase-specific input.`
-        )
-      );
+    // Only validate if it's not a global input
+    if (!Object.prototype.hasOwnProperty.call(globalInputsRecord, token)) {
+      const phaseValue = phaseInputs[token];
+      if (!phaseValue || phaseValue.trim() === "") {
+        errors.push(
+          createValidationError(
+            `phase-input-${token}`,
+            token,
+            `Missing required input: ${token}. Please provide a value for this phase-specific input.`
+          )
+        );
+      }
     }
   });
 
@@ -153,27 +178,45 @@ export function validateAllInputs(
   );
   const phaseErrors = validatePhaseInputs(phaseInputs, template, globalInputs);
 
-  const errors = [...globalErrors, ...phaseErrors];
+  // Filter out global errors for tokens that are handled by phase inputs
+  const filteredGlobalErrors = globalErrors.filter((error) => {
+    // If this token is in phase inputs and has a value, it's not a global error
+    const phaseValue = phaseInputs[error.token];
+    return !phaseValue || phaseValue.trim() === "";
+  });
+
+  const errors = [...filteredGlobalErrors, ...phaseErrors];
   const warnings: ValidationWarning[] = [];
 
   // Add warnings for unused inputs
-  const globalInputsAsRecord = globalInputs as unknown as Record<
-    string,
-    string
-  >;
+  const globalInputsRecord: Record<string, string> = {
+    PROJECT_NAME: globalInputs.projectName,
+    FEATURE_NAME: globalInputs.featureName,
+    FEATURE_SLUG: globalInputs.featureSlug,
+    OWNER: globalInputs.owner,
+    REPO_URL: globalInputs.repoUrl || "",
+    STACK: globalInputs.stack,
+    DATE_ISO: globalInputs.dateIso,
+  };
+
   const tokenAnalysis = analyzeTokens(
     template,
-    globalInputsAsRecord,
+    globalInputsRecord,
     phaseInputs
   );
+
+  // Only generate warnings for unused phase inputs, not global inputs
   tokenAnalysis.unusedTokens.forEach((token: string) => {
-    warnings.push(
-      createValidationWarning(
-        `unused-input-${token}`,
-        token,
-        `Input "${token}" is defined but not used in the current template.`
-      )
-    );
+    // Check if this is a phase input (not a global input)
+    if (phaseInputs[token]) {
+      warnings.push(
+        createValidationWarning(
+          `unused-input-${token}`,
+          token,
+          `Input "${token}" is defined but not used in the current template.`
+        )
+      );
+    }
   });
 
   return {

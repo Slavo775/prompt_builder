@@ -8,7 +8,7 @@ import type {
  * Parse template for token patterns and extract token information
  */
 export function parseTokens(template: string): TokenParseResult {
-  const tokenRegex = /\[([A-Za-z_]+)\]/g;
+  const tokenRegex = /\[([A-Z_]+)\]/g;
   const tokens: string[] = [];
   const positions: Array<{start: number; end: number; token: string}> = [];
   let match: RegExpExecArray | null;
@@ -56,13 +56,7 @@ export function analyzeTokens(
   const phaseTokens = Object.keys(phaseInputs);
   const availableTokens = [...globalTokens, ...phaseTokens];
 
-  const requiredTokens = allTokens.filter((token: string) => {
-    const globalValue = globalInputs[token];
-    const phaseValue = phaseInputs[token];
-    return !globalValue && !phaseValue;
-  });
-
-  const missingTokens = requiredTokens.filter((token: string) => {
+  const missingTokens = allTokens.filter((token: string) => {
     const globalValue = globalInputs[token];
     const phaseValue = phaseInputs[token];
     return (
@@ -70,6 +64,8 @@ export function analyzeTokens(
       (!phaseValue || phaseValue.trim() === "")
     );
   });
+
+  const requiredTokens = allTokens;
 
   const unusedTokens = availableTokens.filter(
     (token: string) => !allTokens.includes(token)

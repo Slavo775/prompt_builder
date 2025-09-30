@@ -50,7 +50,7 @@ describe("tokenParser", () => {
       const result = parseTokens(template);
 
       expect(result.hasInvalidTokens).toBe(true); // Our regex correctly detects invalid tokens
-      expect(result.tokens).toEqual(["name", "PROJECT_NAME"]); // All tokens are parsed
+      expect(result.tokens).toEqual(["PROJECT_NAME"]); // Only valid uppercase tokens are parsed
     });
 
     it("should handle empty template", () => {
@@ -92,7 +92,11 @@ describe("tokenParser", () => {
         "CUSTOM_TOKEN",
         "MISSING_TOKEN",
       ]);
-      expect(result.requiredTokens).toEqual(["MISSING_TOKEN"]);
+      expect(result.requiredTokens).toEqual([
+        "PROJECT_NAME",
+        "CUSTOM_TOKEN",
+        "MISSING_TOKEN",
+      ]);
       expect(result.availableTokens).toEqual([
         "PROJECT_NAME",
         "OWNER",

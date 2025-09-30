@@ -11,7 +11,7 @@
         >Project Name</label>
         <input
           id="project-name"
-          v-model="globalInputs.projectName"
+          :value="globalInputs.projectName"
           type="text"
           :class="[
             'global-inputs__input',
@@ -22,6 +22,12 @@
             getFieldError('project-name') ? 'project-name-error' : undefined
           "
           :aria-invalid="getFieldError('project-name') ? 'true' : 'false'"
+          @input="
+            updateGlobalInput(
+              'projectName',
+              ($event.target as HTMLInputElement).value
+            )
+          "
         >
         <div
           v-if="getFieldError('project-name')"
@@ -39,7 +45,7 @@
         >Feature Name</label>
         <input
           id="feature-name"
-          v-model="globalInputs.featureName"
+          :value="globalInputs.featureName"
           type="text"
           :class="[
             'global-inputs__input',
@@ -50,6 +56,12 @@
             getFieldError('feature-name') ? 'feature-name-error' : undefined
           "
           :aria-invalid="getFieldError('feature-name') ? 'true' : 'false'"
+          @input="
+            updateGlobalInput(
+              'featureName',
+              ($event.target as HTMLInputElement).value
+            )
+          "
         >
         <div
           v-if="getFieldError('feature-name')"
@@ -67,7 +79,7 @@
         >Feature Slug</label>
         <input
           id="feature-slug"
-          v-model="globalInputs.featureSlug"
+          :value="globalInputs.featureSlug"
           type="text"
           :class="[
             'global-inputs__input',
@@ -78,6 +90,12 @@
             getFieldError('feature-slug') ? 'feature-slug-error' : undefined
           "
           :aria-invalid="getFieldError('feature-slug') ? 'true' : 'false'"
+          @input="
+            updateGlobalInput(
+              'featureSlug',
+              ($event.target as HTMLInputElement).value
+            )
+          "
         >
         <div
           v-if="getFieldError('feature-slug')"
@@ -95,7 +113,7 @@
         >Owner</label>
         <input
           id="owner"
-          v-model="globalInputs.owner"
+          :value="globalInputs.owner"
           type="text"
           :class="[
             'global-inputs__input',
@@ -104,6 +122,12 @@
           placeholder="John Doe"
           :aria-describedby="getFieldError('owner') ? 'owner-error' : undefined"
           :aria-invalid="getFieldError('owner') ? 'true' : 'false'"
+          @input="
+            updateGlobalInput(
+              'owner',
+              ($event.target as HTMLInputElement).value
+            )
+          "
         >
         <div
           v-if="getFieldError('owner')"
@@ -121,10 +145,16 @@
         >Repo URL (optional)</label>
         <input
           id="repo-url"
-          v-model="globalInputs.repoUrl"
+          :value="globalInputs.repoUrl"
           type="url"
           class="global-inputs__input"
           placeholder="https://github.com/user/repo"
+          @input="
+            updateGlobalInput(
+              'repoUrl',
+              ($event.target as HTMLInputElement).value
+            )
+          "
         >
       </div>
       <div class="global-inputs__input-group">
@@ -134,7 +164,7 @@
         >Stack</label>
         <input
           id="stack"
-          v-model="globalInputs.stack"
+          :value="globalInputs.stack"
           type="text"
           :class="[
             'global-inputs__input',
@@ -143,6 +173,12 @@
           placeholder="Vue 3, TypeScript, Vite"
           :aria-describedby="getFieldError('stack') ? 'stack-error' : undefined"
           :aria-invalid="getFieldError('stack') ? 'true' : 'false'"
+          @input="
+            updateGlobalInput(
+              'stack',
+              ($event.target as HTMLInputElement).value
+            )
+          "
         >
         <div
           v-if="getFieldError('stack')"
@@ -160,7 +196,7 @@
         >Date</label>
         <input
           id="date"
-          v-model="globalInputs.dateIso"
+          :value="globalInputs.dateIso"
           type="date"
           :class="[
             'global-inputs__input',
@@ -168,6 +204,12 @@
           ]"
           :aria-describedby="getFieldError('date') ? 'date-error' : undefined"
           :aria-invalid="getFieldError('date') ? 'true' : 'false'"
+          @input="
+            updateGlobalInput(
+              'dateIso',
+              ($event.target as HTMLInputElement).value
+            )
+          "
         >
         <div
           v-if="getFieldError('date')"
@@ -198,12 +240,25 @@ const props = withDefaults(defineProps<Props>(), {
   phaseInputs: () => ({}),
 });
 
+const emit = defineEmits<{
+  "update:globalInputs": [globalInputs: GlobalInputs];
+}>();
+
 // Use validation composable
 const {validationState} = useValidation(
   props.template,
   props.globalInputs,
   props.phaseInputs
 );
+
+// Update global input function
+const updateGlobalInput = (field: keyof GlobalInputs, value: string) => {
+  const updatedInputs = {
+    ...props.globalInputs,
+    [field]: value,
+  };
+  emit("update:globalInputs", updatedInputs);
+};
 
 // Get error message for a specific field
 const getFieldError = (fieldName: string): string => {

@@ -114,6 +114,7 @@ export interface ValidationSummaryProps {
 }
 
 // Composable Return Types
+/* eslint-disable no-unused-vars */
 export interface UseValidationReturn {
   validationState: import("vue").ComputedRef<ValidationState>;
   validateInput: (field: string, value: string) => ValidationError[];
@@ -128,6 +129,7 @@ export interface UsePhaseConfigReturn {
   loadConfigurations: () => Promise<void>;
   isLoading: import("vue").Ref<boolean>;
 }
+/* eslint-enable no-unused-vars */
 
 // Configuration Schema
 export const PHASE_CONFIG_SCHEMA = {

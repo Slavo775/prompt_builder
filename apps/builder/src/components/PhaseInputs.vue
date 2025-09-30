@@ -4,50 +4,55 @@
       Phase-Specific Inputs
     </h3>
     <div class="phase-inputs__list">
-      <div
-        v-for="(_, inputKey) in phase.inputs"
+      <template
+        v-for="(value, inputKey) in phase.inputs"
         :key="inputKey"
-        class="phase-inputs__row"
       >
-        <input
-          v-model="phase.inputs[inputKey]"
-          :placeholder="`Value for ${inputKey}`"
-          :class="[
-            'phase-inputs__value',
-            {
-              'phase-inputs__value--error': getFieldError(
-                `phase-input-${inputKey}`
-              ),
-            },
-          ]"
-          :aria-describedby="
-            getFieldError(`phase-input-${inputKey}`)
-              ? `phase-input-${inputKey}-error`
-              : undefined
-          "
-          :aria-invalid="
-            getFieldError(`phase-input-${inputKey}`) ? 'true' : 'false'
-          "
+        <div class="phase-inputs__row">
+          <input
+            :value="value"
+            :placeholder="`Value for ${inputKey}`"
+            :class="[
+              'phase-inputs__value',
+              {
+                'phase-inputs__value--error': getFieldError(
+                  `phase-input-${inputKey}`
+                ),
+              },
+            ]"
+            :aria-describedby="
+              getFieldError(`phase-input-${inputKey}`)
+                ? `phase-input-${inputKey}-error`
+                : undefined
+            "
+            :aria-invalid="
+              getFieldError(`phase-input-${inputKey}`) ? 'true' : 'false'
+            "
+            @input="
+              updatePhaseInput(
+                inputKey,
+                ($event.target as HTMLInputElement).value
+              )
+            "
+          >
+          <button
+            class="phase-inputs__remove"
+            :aria-label="`Remove input ${inputKey}`"
+            @click="removeInput(inputKey)"
+          >
+            ×
+          </button>
+        </div>
+        <!-- Error messages for phase inputs -->
+        <div
+          v-if="getFieldError(`phase-input-${inputKey}`)"
+          :id="`phase-input-${inputKey}-error`"
+          class="phase-inputs__error"
+          role="alert"
         >
-        <button
-          class="phase-inputs__remove"
-          :aria-label="`Remove input ${inputKey}`"
-          @click="removeInput(inputKey)"
-        >
-          ×
-        </button>
-      </div>
-      <!-- Error messages for phase inputs -->
-      <div
-        v-for="(_, inputKey) in phase.inputs"
-        v-if="getFieldError(`phase-input-${inputKey}`)"
-        :id="`phase-input-${inputKey}-error`"
-        :key="`error-${inputKey}`"
-        class="phase-inputs__error"
-        role="alert"
-      >
-        {{ getFieldError(`phase-input-${inputKey}`) }}
-      </div>
+          {{ getFieldError(`phase-input-${inputKey}`) }}
+        </div>
+      </template>
       <div class="phase-inputs__add">
         <input
           v-model="newInputKey"
@@ -114,6 +119,14 @@ const getFieldError = (fieldName: string): string => {
   return error?.message || "";
 };
 
+const updatePhaseInput = (key: string, value: string) => {
+  const updatedPhase = {
+    ...props.phase,
+    inputs: {...props.phase.inputs, [key]: value},
+  };
+  emit("update:phase", updatedPhase);
+};
+
 const addInput = () => {
   if (!newInputKey.value.trim()) return;
 
@@ -127,7 +140,8 @@ const addInput = () => {
 };
 
 const removeInput = (key: string) => {
-  const {[key]: removed, ...remainingInputs} = props.phase.inputs;
+  // eslint-disable-next-line no-unused-vars
+  const {[key]: _, ...remainingInputs} = props.phase.inputs;
   const updatedPhase = {
     ...props.phase,
     inputs: remainingInputs,
