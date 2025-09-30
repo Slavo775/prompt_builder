@@ -1,14 +1,20 @@
 <template>
   <header class="app-header">
-    <h1 class="app-header__title">Prompt Builder</h1>
+    <h1 class="app-header__title">
+      Prompt Builder
+    </h1>
     <div class="app-header__actions">
       <button
-        @click="$emit('export')"
         class="app-header__button"
-        :disabled="!hasUnsavedChanges">
+        :disabled="!hasUnsavedChanges"
+        @click="$emit('export')"
+      >
         Export
       </button>
-      <button @click="$emit('import')" class="app-header__button">
+      <button
+        class="app-header__button"
+        @click="$emit('import')"
+      >
         Import
       </button>
     </div>

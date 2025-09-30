@@ -1,8 +1,14 @@
 <template>
   <div class="json-editor">
-    <label :for="inputId" class="json-editor__label">
+    <label
+      :for="inputId"
+      class="json-editor__label"
+    >
       {{ label }}
-      <span v-if="required" class="json-editor__required">*</span>
+      <span
+        v-if="required"
+        class="json-editor__required"
+      >*</span>
     </label>
     <textarea
       :id="inputId"
@@ -13,11 +19,18 @@
       class="json-editor__textarea"
       :class="{'json-editor__textarea--error': hasError}"
       @blur="validateJson"
-      @input="handleInput" />
-    <div v-if="hasError" class="json-editor__error">
+      @input="handleInput"
+    />
+    <div
+      v-if="hasError"
+      class="json-editor__error"
+    >
       {{ errorMessage }}
     </div>
-    <div v-if="helpText" class="json-editor__help">
+    <div
+      v-if="helpText"
+      class="json-editor__help"
+    >
       {{ helpText }}
     </div>
   </div>

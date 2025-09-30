@@ -1,35 +1,48 @@
 <template>
   <div class="phase-view">
     <div class="phase-view__header">
-      <h2 class="phase-view__title">{{ phase.title }}</h2>
+      <h2 class="phase-view__title">
+        {{ phase.title }}
+      </h2>
       <div class="phase-view__actions">
         <button
           :class="[
             'phase-view__toggle',
             {'phase-view__toggle--active': phase.overridesEnabled},
           ]"
+          :aria-pressed="phase.overridesEnabled"
           @click="toggleOverrides"
-          :aria-pressed="phase.overridesEnabled">
+        >
           {{ phase.overridesEnabled ? "Custom Template" : "Default Template" }}
         </button>
         <button
           v-if="phase.overridesEnabled"
           class="phase-view__reset"
-          @click="resetToDefault">
+          @click="resetToDefault"
+        >
           Reset to Default
         </button>
       </div>
     </div>
 
     <div class="phase-view__content">
-      <PhaseTemplateEditor :phase="phase" @update:template="updateTemplate" />
+      <PhaseTemplateEditor
+        :phase="phase"
+        @update:template="updateTemplate"
+      />
 
-      <PhaseInputs :phase="phase" @update:phase="updatePhase" />
+      <PhaseInputs
+        :phase="phase"
+        :global-inputs="globalInputs"
+        :template="phase.template"
+        @update:phase="updatePhase"
+      />
 
       <PhasePreview
         :rendered-template="renderedTemplate"
         :last-output="phase.lastOutput"
-        @save-output="saveOutput" />
+        @save-output="saveOutput"
+      />
     </div>
   </div>
 </template>

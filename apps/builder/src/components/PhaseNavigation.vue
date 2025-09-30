@@ -7,8 +7,9 @@
         'phase-nav__item',
         {'phase-nav__item--active': currentPhaseId === phase.id},
       ]"
+      :aria-current="currentPhaseId === phase.id ? 'page' : undefined"
       @click="$emit('phase-change', phase.id)"
-      :aria-current="currentPhaseId === phase.id ? 'page' : undefined">
+    >
       <span class="phase-nav__number">{{ phase.id }}</span>
       <span class="phase-nav__title">{{ phase.title }}</span>
     </button>

@@ -2,10 +2,17 @@
   <button
     :class="['copy-button', {'copy-button--success': showSuccess}]"
     :disabled="disabled"
+    :aria-label="ariaLabel"
     @click="handleCopy"
-    :aria-label="ariaLabel">
-    <span v-if="!showSuccess" class="copy-button__icon">📋</span>
-    <span v-else class="copy-button__icon">✅</span>
+  >
+    <span
+      v-if="!showSuccess"
+      class="copy-button__icon"
+    >📋</span>
+    <span
+      v-else
+      class="copy-button__icon"
+    >✅</span>
     <span class="copy-button__text">
       {{ showSuccess ? "Copied!" : buttonText }}
     </span>
@@ -29,7 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const showSuccess = ref(false);
-let successTimeout: number | null = null;
+let successTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const handleCopy = async () => {
   if (props.disabled || !props.text) return;
@@ -42,7 +49,7 @@ const handleCopy = async () => {
       clearTimeout(successTimeout);
     }
 
-    successTimeout = setTimeout(() => {
+    successTimeout = window.setTimeout(() => {
       showSuccess.value = false;
     }, 2000);
   } catch (error) {
@@ -59,7 +66,7 @@ const handleCopy = async () => {
     if (successTimeout) {
       clearTimeout(successTimeout);
     }
-    successTimeout = setTimeout(() => {
+    successTimeout = window.setTimeout(() => {
       showSuccess.value = false;
     }, 2000);
   }

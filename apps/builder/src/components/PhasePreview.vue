@@ -1,20 +1,25 @@
 <template>
   <div class="phase-preview">
     <div class="phase-preview__header">
-      <h3 class="phase-preview__title">Preview</h3>
+      <h3 class="phase-preview__title">
+        Preview
+      </h3>
       <div class="phase-preview__actions">
         <CopyButton
           :text="renderedTemplate"
           button-text="Copy Prompt"
-          :disabled="!renderedTemplate" />
+          :disabled="!renderedTemplate"
+        />
         <CopyButton
           :text="lastOutput"
           button-text="Copy Output"
-          :disabled="!lastOutput" />
+          :disabled="!lastOutput"
+        />
         <button
-          @click="saveOutput"
           class="phase-preview__save-button"
-          :disabled="!renderedTemplate">
+          :disabled="!renderedTemplate"
+          @click="saveOutput"
+        >
           Save Output
         </button>
       </div>

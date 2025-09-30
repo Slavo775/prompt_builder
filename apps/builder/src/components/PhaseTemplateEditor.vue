@@ -6,7 +6,8 @@
       :placeholder="'Enter your template with [TOKEN] placeholders...'"
       :rows="12"
       :disabled="!phase.overridesEnabled"
-      help-text="Use [TOKEN] syntax for placeholders. Available tokens: PROJECT_NAME, FEATURE_NAME, FEATURE_SLUG, OWNER, STACK, DATE_ISO" />
+      help-text="Use [TOKEN] syntax for placeholders. Available tokens: PROJECT_NAME, FEATURE_NAME, FEATURE_SLUG, OWNER, STACK, DATE_ISO"
+    />
   </div>
 </template>
 

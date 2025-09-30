@@ -1,32 +1,65 @@
 <template>
   <div class="phase-inputs">
-    <h3 class="phase-inputs__title">Phase-Specific Inputs</h3>
+    <h3 class="phase-inputs__title">
+      Phase-Specific Inputs
+    </h3>
     <div class="phase-inputs__list">
       <div
-        v-for="(_, key) in phase.inputs"
-        :key="key"
-        class="phase-inputs__row">
+        v-for="(_, inputKey) in phase.inputs"
+        :key="inputKey"
+        class="phase-inputs__row"
+      >
         <input
-          v-model="phase.inputs[key]"
-          :placeholder="`Value for ${key}`"
-          class="phase-inputs__value" />
+          v-model="phase.inputs[inputKey]"
+          :placeholder="`Value for ${inputKey}`"
+          :class="[
+            'phase-inputs__value',
+            {
+              'phase-inputs__value--error': getFieldError(
+                `phase-input-${inputKey}`
+              ),
+            },
+          ]"
+          :aria-describedby="
+            getFieldError(`phase-input-${inputKey}`)
+              ? `phase-input-${inputKey}-error`
+              : undefined
+          "
+          :aria-invalid="
+            getFieldError(`phase-input-${inputKey}`) ? 'true' : 'false'
+          "
+        >
         <button
-          @click="removeInput(key)"
           class="phase-inputs__remove"
-          :aria-label="`Remove input ${key}`">
+          :aria-label="`Remove input ${inputKey}`"
+          @click="removeInput(inputKey)"
+        >
           ×
         </button>
+      </div>
+      <!-- Error messages for phase inputs -->
+      <div
+        v-for="(_, inputKey) in phase.inputs"
+        v-if="getFieldError(`phase-input-${inputKey}`)"
+        :id="`phase-input-${inputKey}-error`"
+        :key="`error-${inputKey}`"
+        class="phase-inputs__error"
+        role="alert"
+      >
+        {{ getFieldError(`phase-input-${inputKey}`) }}
       </div>
       <div class="phase-inputs__add">
         <input
           v-model="newInputKey"
           placeholder="New input key"
           class="phase-inputs__key"
-          @keyup.enter="addInput" />
+          @keyup.enter="addInput"
+        >
         <button
-          @click="addInput"
           :disabled="!newInputKey.trim()"
-          class="phase-inputs__add-button">
+          class="phase-inputs__add-button"
+          @click="addInput"
+        >
           Add Input
         </button>
       </div>
@@ -37,18 +70,49 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import type {Phase} from "../types";
+import type {GlobalInputs} from "../types";
+import type {ValidationError} from "../config/types";
+import {useValidation} from "../composables/useValidation";
 
 interface Props {
   phase: Phase;
+  globalInputs?: GlobalInputs;
+  template?: string;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  globalInputs: () => ({
+    projectName: "",
+    featureName: "",
+    featureSlug: "",
+    owner: "",
+    repoUrl: "",
+    stack: "",
+    dateIso: "",
+  }),
+  template: "",
+});
 
 const emit = defineEmits<{
   "update:phase": [phase: Phase];
 }>();
 
 const newInputKey = ref("");
+
+// Use validation composable
+const {validationState} = useValidation(
+  props.template,
+  props.globalInputs,
+  props.phase.inputs
+);
+
+// Get error message for a specific field
+const getFieldError = (fieldName: string): string => {
+  const error = validationState.value.errors.find(
+    (err: ValidationError) => err.field === fieldName
+  );
+  return error?.message || "";
+};
 
 const addInput = () => {
   if (!newInputKey.value.trim()) return;
@@ -157,5 +221,22 @@ const removeInput = (key: string) => {
   background: #9ca3af;
   border-color: #9ca3af;
   cursor: not-allowed;
+}
+
+.phase-inputs__value--error {
+  border-color: #dc2626;
+}
+
+.phase-inputs__value--error:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.phase-inputs__error {
+  font-size: 0.75rem;
+  color: #dc2626;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+  display: block;
 }
 </style>

@@ -1,16 +1,19 @@
 import {computed, ref} from "vue";
 import type {Phase, PhaseId, PhaseMap, GlobalInputs} from "../types";
-import {DEFAULT_PHASE_TITLES, DEFAULT_PHASE_TEMPLATES} from "../types";
+import {usePhaseConfig} from "./usePhaseConfig";
 
 export function usePhases(phases: PhaseMap, globalInputs: GlobalInputs) {
   const currentPhaseId = ref<PhaseId>("0");
+  const {getPhaseConfig} = usePhaseConfig();
 
   const getPhase = (id: PhaseId): Phase => {
     if (!phases[id]) {
+      // Try to get configuration first, fallback to defaults
+      const config = getPhaseConfig(id);
       phases[id] = {
         id,
-        title: DEFAULT_PHASE_TITLES[id],
-        template: DEFAULT_PHASE_TEMPLATES[id],
+        title: config.title,
+        template: config.template,
         overridesEnabled: false,
         inputs: {},
         lastOutput: "",
@@ -41,7 +44,8 @@ export function usePhases(phases: PhaseMap, globalInputs: GlobalInputs) {
 
   const resetPhaseToDefault = (id: string) => {
     const phase = getPhase(id as PhaseId);
-    phase.template = DEFAULT_PHASE_TEMPLATES[id as PhaseId];
+    const config = getPhaseConfig(id as PhaseId);
+    phase.template = config.template;
     phase.overridesEnabled = false;
     phase.inputs = {};
     phase.lastOutput = "";
