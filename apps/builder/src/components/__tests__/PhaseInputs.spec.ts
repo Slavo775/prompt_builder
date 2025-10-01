@@ -42,6 +42,7 @@ describe("PhaseInputs", () => {
       repoUrl: "https://github.com/test/repo",
       stack: "Vue 3, TypeScript",
       dateIso: "2024-01-01",
+      requirements: "Test requirements for the project",
     };
   });
 

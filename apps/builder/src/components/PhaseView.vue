@@ -11,38 +11,31 @@
             {'phase-view__toggle--active': phase.overridesEnabled},
           ]"
           :aria-pressed="phase.overridesEnabled"
-          @click="toggleOverrides"
-        >
+          @click="toggleOverrides">
           {{ phase.overridesEnabled ? "Custom Template" : "Default Template" }}
         </button>
         <button
           v-if="phase.overridesEnabled"
           class="phase-view__reset"
-          @click="resetToDefault"
-        >
+          @click="resetToDefault">
           Reset to Default
         </button>
       </div>
     </div>
 
     <div class="phase-view__content">
-      <PhaseTemplateEditor
-        :phase="phase"
-        @update:template="updateTemplate"
-      />
+      <PhaseTemplateEditor :phase="phase" @update:template="updateTemplate" />
 
       <PhaseInputs
         :phase="phase"
         :global-inputs="globalInputs"
         :template="phase.template"
-        @update:phase="updatePhase"
-      />
+        @update:phase="updatePhase" />
 
       <PhasePreview
         :rendered-template="renderedTemplate"
         :last-output="phase.lastOutput"
-        @save-output="saveOutput"
-      />
+        @save-output="saveOutput" />
     </div>
   </div>
 </template>
@@ -66,11 +59,19 @@ const emit = defineEmits<{
   "update:phase": [phase: Phase];
 }>();
 
-const {replaceTokens} = useReplacements(props.globalInputs, props.phase.inputs);
-
 const renderedTemplate = computed(() => {
+  // Call useReplacements inside computed to ensure reactivity
+  const {replaceTokens} = useReplacements(
+    props.globalInputs,
+    props.phase.inputs
+  );
   return replaceTokens(props.phase.template);
 });
+
+// Enhanced token replacement result for future use
+// const tokenReplacementResult = computed(() => {
+//   return replaceTokensWithResult(props.phase.template);
+// });
 
 const toggleOverrides = () => {
   const updatedPhase = {

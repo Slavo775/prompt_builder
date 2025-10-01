@@ -11,6 +11,7 @@ describe("useReplacements", () => {
     repoUrl: "https://github.com/test/repo",
     stack: "Vue 3, TypeScript",
     dateIso: "2024-01-01",
+    requirements: "Test requirements for the project",
   };
 
   const mockPhaseInputs = {
@@ -45,6 +46,14 @@ describe("useReplacements", () => {
     );
   });
 
+  it("should replace requirements token correctly", () => {
+    const {replaceTokens} = useReplacements(mockGlobalInputs, {});
+    const template = "Requirements: [REQUIREMENTS]";
+    const result = replaceTokens(template);
+
+    expect(result).toBe("Requirements: Test requirements for the project");
+  });
+
   it("should leave unknown tokens unchanged", () => {
     const {replaceTokens} = useReplacements(mockGlobalInputs, {});
     const template = "Unknown: [UNKNOWN_TOKEN], Known: [PROJECT_NAME]";
@@ -62,6 +71,7 @@ describe("useReplacements", () => {
 
     expect(tokens).toContain("PROJECT_NAME");
     expect(tokens).toContain("FEATURE_NAME");
+    expect(tokens).toContain("REQUIREMENTS");
     expect(tokens).toContain("CUSTOM_TOKEN");
     expect(tokens).toContain("ANOTHER_TOKEN");
   });
@@ -78,5 +88,45 @@ describe("useReplacements", () => {
     const invalidResult = validateTokens(invalidTemplate);
     expect(invalidResult.valid).toBe(false);
     expect(invalidResult.missingTokens).toContain("UNKNOWN_TOKEN");
+  });
+
+  it("should provide token replacement result", () => {
+    const {replaceTokensWithResult} = useReplacements(
+      mockGlobalInputs,
+      mockPhaseInputs
+    );
+    const template = "Project: [PROJECT_NAME], Missing: [MISSING_TOKEN]";
+    const result = replaceTokensWithResult(template);
+
+    expect(result.originalTemplate).toBe(template);
+    expect(result.renderedTemplate).toBe(
+      "Project: Test Project, Missing: [MISSING_TOKEN]"
+    );
+    expect(result.replacedTokens).toContain("PROJECT_NAME");
+    expect(result.unreplacedTokens).toContain("MISSING_TOKEN");
+    expect(result.isValid).toBe(false);
+  });
+
+  it("should determine token type correctly", () => {
+    const {getTokenType} = useReplacements(mockGlobalInputs, mockPhaseInputs);
+
+    expect(getTokenType("PROJECT_NAME")).toBe("global");
+    expect(getTokenType("REQUIREMENTS")).toBe("global");
+    expect(getTokenType("CUSTOM_TOKEN")).toBe("phase");
+    expect(getTokenType("VALID_CUSTOM")).toBe("custom");
+    expect(getTokenType("invalid-token")).toBe("unknown");
+  });
+
+  it("should provide token replacement service", () => {
+    const {tokenReplacementService} = useReplacements(
+      mockGlobalInputs,
+      mockPhaseInputs
+    );
+
+    expect(tokenReplacementService).toBeDefined();
+    expect(typeof tokenReplacementService.replaceTokens).toBe("function");
+    expect(typeof tokenReplacementService.validateTokens).toBe("function");
+    expect(typeof tokenReplacementService.getAvailableTokens).toBe("function");
+    expect(typeof tokenReplacementService.getTokenType).toBe("function");
   });
 });

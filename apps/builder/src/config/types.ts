@@ -5,7 +5,7 @@ export interface PhaseConfig {
   id: PhaseId;
   title: string;
   template: string;
-  description?: string;
+  description: string;
 }
 
 export interface ValidationRule {
@@ -43,6 +43,101 @@ export interface TokenAnalysis {
   unusedTokens: string[];
 }
 
+// Token Replacement Types
+export interface TokenReplacementResult {
+  originalTemplate: string;
+  renderedTemplate: string;
+  replacedTokens: string[];
+  unreplacedTokens: string[];
+  isValid: boolean;
+  errors: ValidationError[];
+}
+
+// Enhanced Validation Types
+export interface EnhancedValidationState extends ValidationState {
+  requirementsValid: boolean;
+  tokenReplacementValid: boolean;
+}
+
+// Requirements Input Types
+export interface RequirementsInputProps {
+  modelValue: string;
+  disabled?: boolean;
+  placeholder?: string;
+  rows?: number;
+  maxLength?: number;
+  required?: boolean;
+  errorMessage?: string;
+  helpText?: string;
+  label?: string;
+  id?: string;
+  ariaDescribedBy?: string;
+}
+
+// Token Replacement Service
+export interface TokenReplacementService {
+  replaceTokens(
+    // eslint-disable-next-line no-unused-vars
+    template: string,
+    // eslint-disable-next-line no-unused-vars
+    inputs: Record<string, string>
+  ): TokenReplacementResult;
+  validateTokens(
+    // eslint-disable-next-line no-unused-vars
+    template: string,
+    // eslint-disable-next-line no-unused-vars
+    inputs: Record<string, string>
+  ): ValidationError[];
+  getAvailableTokens(
+    // eslint-disable-next-line no-unused-vars
+    inputs: Record<string, string>
+  ): string[];
+  getTokenType(
+    // eslint-disable-next-line no-unused-vars
+    token: string,
+    // eslint-disable-next-line no-unused-vars
+    inputs: Record<string, string>
+  ): "global" | "phase" | "custom" | "unknown";
+}
+
+// Union Types
+export type TokenType = "global" | "phase" | "custom" | "unknown";
+export type ValidationSeverity = "error" | "warning" | "info";
+export type InputFieldType =
+  | "text"
+  | "email"
+  | "url"
+  | "textarea"
+  | "requirements";
+export type TemplateValidationState =
+  | "valid"
+  | "invalid"
+  | "warning"
+  | "loading";
+
+// Constants
+export const ValidationErrorType = {
+  REQUIRED: "required",
+  FORMAT: "format",
+  CUSTOM: "custom",
+  TOKEN_MISSING: "token_missing",
+  TOKEN_INVALID: "token_invalid",
+} as const;
+
+export const TokenReplacementStatus = {
+  SUCCESS: "success",
+  PARTIAL: "partial",
+  FAILED: "failed",
+  VALIDATING: "validating",
+} as const;
+
+export const InputValidationState = {
+  VALID: "valid",
+  INVALID: "invalid",
+  WARNING: "warning",
+  PENDING: "pending",
+} as const;
+
 export interface TokenParseResult {
   tokens: string[];
   positions: Array<{start: number; end: number; token: string}>;
@@ -59,8 +154,6 @@ export type ValidationStatus =
   | "error";
 
 export type ConfigLoadStatus = "idle" | "loading" | "loaded" | "error";
-
-export type TokenType = "global" | "phase" | "custom" | "unknown";
 
 // Event Types
 export interface ValidationEvent {

@@ -60,6 +60,7 @@ export function validateGlobalInputs(
     REPO_URL: globalInputs.repoUrl || "",
     STACK: globalInputs.stack,
     DATE_ISO: globalInputs.dateIso,
+    REQUIREMENTS: globalInputs.requirements,
   };
 
   const tokenAnalysis = analyzeTokens(
@@ -118,6 +119,7 @@ export function validatePhaseInputs(
     REPO_URL: globalInputs.repoUrl || "",
     STACK: globalInputs.stack,
     DATE_ISO: globalInputs.dateIso,
+    REQUIREMENTS: globalInputs.requirements,
   };
 
   const tokenAnalysis = analyzeTokens(
@@ -158,6 +160,7 @@ function getGlobalInputFieldName(token: string): string {
     REPO_URL: "repo-url",
     STACK: "stack",
     DATE_ISO: "date",
+    REQUIREMENTS: "requirements",
   };
 
   return fieldMap[token] || token.toLowerCase().replace(/_/g, "-");

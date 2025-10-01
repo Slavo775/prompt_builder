@@ -2,47 +2,34 @@ import type {PhaseConfig} from "../types";
 
 export const PHASE_2_CONFIG: PhaseConfig = {
   id: "2",
-  title: "Implementation",
-  template: `# [PROJECT_NAME] - [FEATURE_NAME] Implementation
+  title: "PRD for a specific change → PRD_[FEATURE_SLUG].md",
+  template: `ROLE
+You are the Product Manager for [PROJECT_NAME].
 
-## Implementation Status
-- **Project:** [PROJECT_NAME]
-- **Feature:** [FEATURE_NAME] ([FEATURE_SLUG])
-- **Owner:** [OWNER]
-- **Date:** [DATE_ISO]
-- **Stack:** [STACK]
+NON-NEGOTIABLE CONSTRAINTS
 
-## Development Progress
-### Completed
-- [ ] [COMPLETED_TASK_1]
-- [ ] [COMPLETED_TASK_2]
+Align with COMPREHENSIVE_ANALYSIS.md and REPO_CONSTRAINTS.md.
+Do NOT prescribe infra/config edits; if needed, mark as risk and defer to RFC.
+OBJECTIVE
+Create a PRD for: [INSERT SPECIFIC REQUIREMENT]
 
-### In Progress
-- [ ] [CURRENT_TASK_1]
-- [ ] [CURRENT_TASK_2]
+OUTPUT
+Write PRD_[FEATURE_SLUG].md at repo root with:
 
-### Pending
-- [ ] [PENDING_TASK_1]
-- [ ] [PENDING_TASK_2]
+Background & Problem Statement
+Goals and Non-Goals
+User Stories (INVEST) + Acceptance Criteria
+Functional Requirements (numbered, testable)
+Technical Considerations
+Perf, a11y, i18n, analytics, state mgmt, error/empty/loading states
+Risks & Mitigations
+Success Criteria & Measurement
+Public UI/API Types (Design)  ← REQUIRED
+Define key TypeScript types/interfaces/enums/union types and component props
+No any, no unknown, no non-null !
+NOTES
 
-## Technical Implementation
-### Code Structure
-- [ ] Component architecture
-- [ ] State management
-- [ ] API integration
-- [ ] Error handling
-
-### Testing
-- [ ] Unit tests
-- [ ] Integration tests
-- [ ] E2E tests
-- [ ] Performance tests
-
-## Code Review Checklist
-- [ ] Code follows style guidelines
-- [ ] Tests are comprehensive
-- [ ] Documentation is updated
-- [ ] Security considerations addressed`,
+Make it the single source of truth for implementation.`,
   description:
     "Implementation phase tracking development progress, technical details, and testing status",
 };

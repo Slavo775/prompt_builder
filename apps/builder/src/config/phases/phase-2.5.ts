@@ -2,58 +2,40 @@ import type {PhaseConfig} from "../types";
 
 export const PHASE_2_5_CONFIG: PhaseConfig = {
   id: "2.5",
-  title: "Review",
-  template: `# [PROJECT_NAME] - [FEATURE_NAME] Review
+  title: "Frontend RFC & Impact (approval gate) → RFC_[FEATURE_SLUG].md",
+  template: `ROLE
+You are a Senior Frontend Developer preparing the implementation plan.
 
-## Review Overview
-- **Project:** [PROJECT_NAME]
-- **Feature:** [FEATURE_NAME] ([FEATURE_SLUG])
-- **Owner:** [OWNER]
-- **Date:** [DATE_ISO]
-- **Stack:** [STACK]
+NON-NEGOTIABLE CONSTRAINTS
 
-## Code Review Checklist
-### Functionality
-- [ ] Feature works as specified
-- [ ] Edge cases handled
-- [ ] Error handling implemented
-- [ ] User experience is smooth
+Do NOT modify any DN-T files (.gitignore and all config/dotfiles included).
+Any infra/config changes must be PROPOSALS only here, with minimal diffs.
+OBJECTIVE
+Create RFC_[FEATURE_SLUG].md at repo root.
 
-### Code Quality
-- [ ] Code follows style guidelines
-- [ ] Functions are well-named and focused
-- [ ] No code duplication
-- [ ] Comments are clear and helpful
+CONTENTS
 
-### Testing
-- [ ] Unit tests cover new functionality
-- [ ] Integration tests pass
-- [ ] Manual testing completed
-- [ ] Performance is acceptable
+Scope & Files (Allowlist)
 
-### Security & Performance
-- [ ] No security vulnerabilities
-- [ ] Performance benchmarks met
-- [ ] Memory usage is reasonable
-- [ ] Database queries are optimized
+Exact files/dirs to be changed (app code, tests, docs ONLY)
+Zero-Infra-Change Plan
 
-## Review Notes
-### What's Working Well
-- [ ] [POSITIVE_ASPECT_1]
-- [ ] [POSITIVE_ASPECT_2]
+How you will use current lint, tsconfig, Next.js, styling, testing, a11y
+Adapter/shim strategies if needed to fit constraints
+Proposed Infra/Config Adjustments (Optional; Proposal-Only)
 
-### Areas for Improvement
-- [ ] [IMPROVEMENT_1]
-- [ ] [IMPROVEMENT_2]
+For each: rationale, minimal diff snippet (NOT to be applied), risk/benefit
+Type Guarantees
 
-### Questions & Concerns
-- [ ] [QUESTION_1]
-- [ ] [QUESTION_2]
+No any, no unknown, no non-null !, no as any
+Exhaustive unions; precise exported types
+Validation Plan (Human-Runnable)
 
-## Next Steps
-- [ ] Address review feedback
-- [ ] Update documentation
-- [ ] Prepare for testing phase`,
+pnpm -w lint
+pnpm -w typecheck
+pnpm -w test
+pnpm -w build
+`,
   description:
     "Code review phase ensuring quality, functionality, and readiness for testing",
 };

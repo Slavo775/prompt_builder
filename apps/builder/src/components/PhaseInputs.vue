@@ -94,6 +94,7 @@ const props = withDefaults(defineProps<Props>(), {
     repoUrl: "",
     stack: "",
     dateIso: "",
+    requirements: "",
   }),
   template: "",
 });

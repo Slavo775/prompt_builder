@@ -3,30 +3,27 @@
     <AppHeader
       :has-unsaved-changes="hasUnsavedChanges"
       @export="exportData"
-      @import="importData"
-    />
+      @import="importData" />
 
     <div class="app__main">
       <aside class="app__sidebar">
         <PhaseNavigation
           :phases-list="phasesList"
           :current-phase-id="currentPhaseId"
-          @phase-change="currentPhaseId = $event"
-        />
+          @phase-change="currentPhaseId = $event" />
 
         <GlobalInputs
           :global-inputs="globalInputs"
           :template="currentPhase.template"
           :phase-inputs="currentPhase.inputs"
-        />
+          @update:global-inputs="updateGlobalInputs" />
       </aside>
 
       <main class="app__content">
         <PhaseView
           :phase="currentPhase"
           :global-inputs="globalInputs"
-          @update:phase="updateCurrentPhase"
-        />
+          @update:phase="updateCurrentPhase" />
       </main>
     </div>
 
@@ -35,20 +32,19 @@
       type="file"
       accept=".json"
       style="display: none"
-      @change="handleFileImport"
-    >
+      @change="handleFileImport" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {ref, computed} from "vue";
 import {usePhaseBuilderStorage} from "../composables/useLocalStorage";
 import {usePhases} from "../composables/usePhases";
 import AppHeader from "../components/AppHeader.vue";
 import PhaseNavigation from "../components/PhaseNavigation.vue";
 import GlobalInputs from "../components/GlobalInputs.vue";
 import PhaseView from "../components/PhaseView.vue";
-import type {Phase} from "../types";
+import type {Phase, GlobalInputs as GlobalInputsType} from "../types";
 
 const storage = usePhaseBuilderStorage();
 const fileInput = ref<HTMLInputElement>();
@@ -63,10 +59,20 @@ const {
   importPhases,
 } = usePhases(storage.value.phases, storage.value.globalInputs);
 
-const globalInputs = storage.value.globalInputs;
+const globalInputs = computed(() => ({
+  ...storage.value.globalInputs,
+  requirements: storage.value.globalInputs.requirements || "",
+}));
 
 const updateCurrentPhase = (updatedPhase: Phase) => {
   updatePhase(updatedPhase.id, updatedPhase);
+};
+
+const updateGlobalInputs = (newGlobalInputs: GlobalInputsType) => {
+  storage.value.globalInputs = {
+    ...newGlobalInputs,
+    requirements: newGlobalInputs.requirements || "",
+  };
 };
 
 const exportData = () => {

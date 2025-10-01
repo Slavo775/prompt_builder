@@ -2,60 +2,38 @@ import type {PhaseConfig} from "../types";
 
 export const PHASE_4_CONFIG: PhaseConfig = {
   id: "4",
-  title: "Deployment",
-  template: `# [PROJECT_NAME] - [FEATURE_NAME] Deployment
+  title: "Verification helper (for reviewer/CI)",
+  template: `ROLE
+You are a strict reviewer verifying [FEATURE_SLUG] submission.
+NON-NEGOTIABLE CONSTRAINTS
+Reject any submission that touches DN-T files (.gitignore and all configs/dotfiles).
+Enforce TS/lint/a11y/type guarantees.
+OBJECTIVE
+Evaluate the implementation output against constraints and readiness to merge.
+CHECKLIST
+Contract
+Contract Compliance Block present; DN-T unchanged: Yes
+Touched files allowlist only includes app/test/docs: Yes
+Types & Lint
+No any, unknown, non-null !, as any, or eslint-disable sneaked in.
+All new/changed components export precise prop types; unions exhaustive.
+Tests
+Unit tests present/updated.
+A11y tests use jest-axe with toHaveNoViolations().
+Product & Architecture Fit
+Matches PRD_[FEATURE_SLUG].md.
+Stays within RFC_[FEATURE_SLUG].md scope.
+Local/CI Commands (run)
 
-## Deployment Overview
-- **Project:** [PROJECT_NAME]
-- **Feature:** [FEATURE_NAME] ([FEATURE_SLUG])
-- **Owner:** [OWNER]
-- **Date:** [DATE_ISO]
-- **Stack:** [STACK]
+pnpm -w lint
+pnpm -w typecheck
+pnpm -w test
+pnpm -w build
 
-## Pre-Deployment Checklist
-### Code Quality
-- [ ] All tests passing
-- [ ] Code review completed
-- [ ] Security scan passed
-- [ ] Performance benchmarks met
 
-### Infrastructure
-- [ ] Environment configured
-- [ ] Database migrations ready
-- [ ] Monitoring configured
-- [ ] Backup strategy in place
-
-### Documentation
-- [ ] API documentation updated
-- [ ] User documentation updated
-- [ ] Deployment guide updated
-- [ ] Rollback plan documented
-
-## Deployment Plan
-### Phase 1: Staging
-- [ ] Deploy to staging
-- [ ] Run smoke tests
-- [ ] Validate functionality
-- [ ] Performance testing
-
-### Phase 2: Production
-- [ ] Deploy to production
-- [ ] Monitor metrics
-- [ ] Validate deployment
-- [ ] Notify stakeholders
-
-## Post-Deployment
-### Monitoring
-- [ ] Application metrics
-- [ ] Error tracking
-- [ ] Performance monitoring
-- [ ] User feedback collection
-
-### Rollback Plan
-- [ ] Rollback triggers defined
-- [ ] Rollback procedure tested
-- [ ] Communication plan ready
-- [ ] Recovery time estimated`,
+OUTCOME
+If all green → approve.
+If issues → request fixes or updated RFC. Never accept DN-T edits without explicit approval.`,
   description:
     "Final deployment phase including pre-deployment checks, deployment plan, and post-deployment monitoring",
 };

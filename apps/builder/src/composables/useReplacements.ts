@@ -1,5 +1,10 @@
 import {computed} from "vue";
 import type {GlobalInputs, ReplacementMap} from "../types";
+import type {
+  TokenReplacementResult,
+  TokenReplacementService,
+  TokenType,
+} from "../config/types";
 
 export function useReplacements(
   globalInputs: GlobalInputs,
@@ -13,6 +18,7 @@ export function useReplacements(
     REPO_URL: globalInputs.repoUrl || "",
     STACK: globalInputs.stack,
     DATE_ISO: globalInputs.dateIso,
+    REQUIREMENTS: globalInputs.requirements,
     ...phaseInputs,
   }));
 
@@ -43,10 +49,89 @@ export function useReplacements(
     };
   };
 
+  const replaceTokensWithResult = (
+    template: string
+  ): TokenReplacementResult => {
+    const tokenRegex = /\[([A-Z_]+)\]/g;
+    const replacedTokens: string[] = [];
+    const unreplacedTokens: string[] = [];
+    let match: RegExpExecArray | null;
+
+    let renderedTemplate = template;
+    while ((match = tokenRegex.exec(template)) !== null) {
+      const token = match[1];
+      if (token) {
+        const value = replacementMap.value[token];
+
+        if (value) {
+          replacedTokens.push(token);
+          renderedTemplate = renderedTemplate.replace(match[0], value);
+        } else {
+          unreplacedTokens.push(token);
+        }
+      }
+    }
+
+    return {
+      originalTemplate: template,
+      renderedTemplate,
+      replacedTokens,
+      unreplacedTokens,
+      isValid: unreplacedTokens.length === 0,
+      errors: [],
+    };
+  };
+
+  const getTokenType = (token: string): TokenType => {
+    const globalTokens = [
+      "PROJECT_NAME",
+      "FEATURE_NAME",
+      "FEATURE_SLUG",
+      "OWNER",
+      "REPO_URL",
+      "STACK",
+      "DATE_ISO",
+      "REQUIREMENTS",
+    ];
+
+    if (globalTokens.includes(token)) {
+      return "global";
+    }
+
+    if (Object.prototype.hasOwnProperty.call(phaseInputs, token)) {
+      return "phase";
+    }
+
+    const validTokenRegex = /^[A-Z_][A-Z0-9_]*$/;
+    if (validTokenRegex.test(token)) {
+      return "custom";
+    }
+
+    return "unknown";
+  };
+
+  const tokenReplacementService: TokenReplacementService = {
+    replaceTokens: replaceTokensWithResult,
+    validateTokens: (template: string) => {
+      const result = validateTokens(template);
+      return result.missingTokens.map((token) => ({
+        field: `token-${token.toLowerCase()}`,
+        token,
+        message: `Missing required input: ${token}`,
+        type: "required" as const,
+      }));
+    },
+    getAvailableTokens,
+    getTokenType,
+  };
+
   return {
     replacementMap,
     replaceTokens,
     getAvailableTokens,
     validateTokens,
+    replaceTokensWithResult,
+    getTokenType,
+    tokenReplacementService,
   };
 }

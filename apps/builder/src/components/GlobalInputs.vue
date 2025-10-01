@@ -220,6 +220,26 @@
           {{ getFieldError("date") }}
         </div>
       </div>
+
+      <!-- Requirements Input -->
+      <div class="global-inputs__input-group">
+        <RequirementsInput
+          :model-value="globalInputs.requirements"
+          :error-message="getFieldError('requirements')"
+          :aria-described-by="
+            getFieldError('requirements') ? 'requirements-error' : undefined
+          "
+          @update:model-value="updateGlobalInput('requirements', $event)"
+        />
+        <div
+          v-if="getFieldError('requirements')"
+          id="requirements-error"
+          class="global-inputs__error"
+          role="alert"
+        >
+          {{ getFieldError("requirements") }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -228,6 +248,7 @@
 import type {GlobalInputs} from "../types";
 import type {ValidationError} from "../config/types";
 import {useValidation} from "../composables/useValidation";
+import RequirementsInput from "./RequirementsInput.vue";
 
 interface Props {
   globalInputs: GlobalInputs;
@@ -269,6 +290,7 @@ const getFieldError = (fieldName: string): string => {
     owner: "owner",
     stack: "stack",
     date: "date",
+    requirements: "requirements",
   };
 
   const mappedField = fieldMap[fieldName];
