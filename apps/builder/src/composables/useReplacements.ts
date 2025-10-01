@@ -14,10 +14,6 @@ export function useReplacements(
     PROJECT_NAME: globalInputs.projectName,
     FEATURE_NAME: globalInputs.featureName,
     FEATURE_SLUG: globalInputs.featureSlug,
-    OWNER: globalInputs.owner,
-    REPO_URL: globalInputs.repoUrl || "",
-    STACK: globalInputs.stack,
-    DATE_ISO: globalInputs.dateIso,
     REQUIREMENTS: globalInputs.requirements,
     ...phaseInputs,
   }));

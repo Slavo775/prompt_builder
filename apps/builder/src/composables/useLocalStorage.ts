@@ -1,5 +1,25 @@
 import {ref, watch} from "vue";
-import type {PhaseBuilderState} from "../types";
+import type {PhaseBuilderState, GlobalInputs} from "../types";
+
+interface LegacyGlobalInputs {
+  projectName: string;
+  featureName: string;
+  featureSlug: string;
+  owner?: string;
+  repoUrl?: string;
+  stack?: string;
+  dateIso?: string;
+  requirements: string;
+}
+
+function migrateGlobalInputs(legacy: LegacyGlobalInputs): GlobalInputs {
+  return {
+    projectName: legacy.projectName || "",
+    featureName: legacy.featureName || "",
+    featureSlug: legacy.featureSlug || "",
+    requirements: legacy.requirements || "",
+  };
+}
 
 const STORAGE_KEY = "phaseBuilder:v1";
 
@@ -27,10 +47,6 @@ export function usePhaseBuilderStorage() {
       projectName: "",
       featureName: "",
       featureSlug: "",
-      owner: "",
-      repoUrl: "",
-      stack: "",
-      dateIso: new Date().toISOString().split("T")[0] || "",
       requirements: "",
     },
     currentPhaseId: "0",
@@ -42,9 +58,11 @@ export function usePhaseBuilderStorage() {
   if (storedValue) {
     try {
       const parsed = JSON.parse(storedValue);
-      // Migrate existing data to include requirements field
-      if (parsed.globalInputs && !parsed.globalInputs.requirements) {
-        parsed.globalInputs.requirements = "";
+      // Migrate existing data to new GlobalInputs structure
+      if (parsed.globalInputs) {
+        parsed.globalInputs = migrateGlobalInputs(
+          parsed.globalInputs as LegacyGlobalInputs
+        );
       }
       initialValue = parsed;
     } catch (error) {

@@ -45,10 +45,6 @@ describe("PhaseView", () => {
     projectName: "Test Project",
     featureName: "Test Feature",
     featureSlug: "test-feature",
-    owner: "Test Owner",
-    repoUrl: "https://github.com/test/repo",
-    stack: "Vue 3, TypeScript",
-    dateIso: "2024-01-01",
     requirements: "Test Requirements",
   };
 

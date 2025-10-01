@@ -56,10 +56,6 @@ export function validateGlobalInputs(
     PROJECT_NAME: globalInputs.projectName,
     FEATURE_NAME: globalInputs.featureName,
     FEATURE_SLUG: globalInputs.featureSlug,
-    OWNER: globalInputs.owner,
-    REPO_URL: globalInputs.repoUrl || "",
-    STACK: globalInputs.stack,
-    DATE_ISO: globalInputs.dateIso,
     REQUIREMENTS: globalInputs.requirements,
   };
 
@@ -115,10 +111,6 @@ export function validatePhaseInputs(
     PROJECT_NAME: globalInputs.projectName,
     FEATURE_NAME: globalInputs.featureName,
     FEATURE_SLUG: globalInputs.featureSlug,
-    OWNER: globalInputs.owner,
-    REPO_URL: globalInputs.repoUrl || "",
-    STACK: globalInputs.stack,
-    DATE_ISO: globalInputs.dateIso,
     REQUIREMENTS: globalInputs.requirements,
   };
 
@@ -156,10 +148,6 @@ function getGlobalInputFieldName(token: string): string {
     PROJECT_NAME: "project-name",
     FEATURE_NAME: "feature-name",
     FEATURE_SLUG: "feature-slug",
-    OWNER: "owner",
-    REPO_URL: "repo-url",
-    STACK: "stack",
-    DATE_ISO: "date",
     REQUIREMENTS: "requirements",
   };
 
@@ -196,10 +184,6 @@ export function validateAllInputs(
     PROJECT_NAME: globalInputs.projectName,
     FEATURE_NAME: globalInputs.featureName,
     FEATURE_SLUG: globalInputs.featureSlug,
-    OWNER: globalInputs.owner,
-    REPO_URL: globalInputs.repoUrl || "",
-    STACK: globalInputs.stack,
-    DATE_ISO: globalInputs.dateIso,
   };
 
   const tokenAnalysis = analyzeTokens(

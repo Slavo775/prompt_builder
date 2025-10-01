@@ -21,10 +21,6 @@ describe("GlobalInputs", () => {
     projectName: "Test Project",
     featureName: "Test Feature",
     featureSlug: "test-feature",
-    owner: "John Doe",
-    repoUrl: "https://github.com/test/repo",
-    stack: "Vue 3, TypeScript",
-    dateIso: "2024-01-01",
     requirements: "Test requirements for the project",
   };
 
@@ -38,10 +34,7 @@ describe("GlobalInputs", () => {
     expect(wrapper.find("#project-name").exists()).toBe(true);
     expect(wrapper.find("#feature-name").exists()).toBe(true);
     expect(wrapper.find("#feature-slug").exists()).toBe(true);
-    expect(wrapper.find("#owner").exists()).toBe(true);
-    expect(wrapper.find("#repo-url").exists()).toBe(true);
-    expect(wrapper.find("#stack").exists()).toBe(true);
-    expect(wrapper.find("#date").exists()).toBe(true);
+    expect(wrapper.find("textarea").exists()).toBe(true);
   });
 
   it("should bind input values correctly", () => {
@@ -54,12 +47,9 @@ describe("GlobalInputs", () => {
     expect(wrapper.find("#project-name").element.value).toBe("Test Project");
     expect(wrapper.find("#feature-name").element.value).toBe("Test Feature");
     expect(wrapper.find("#feature-slug").element.value).toBe("test-feature");
-    expect(wrapper.find("#owner").element.value).toBe("John Doe");
-    expect(wrapper.find("#repo-url").element.value).toBe(
-      "https://github.com/test/repo"
+    expect(wrapper.find("textarea").element.value).toBe(
+      "Test requirements for the project"
     );
-    expect(wrapper.find("#stack").element.value).toBe("Vue 3, TypeScript");
-    expect(wrapper.find("#date").element.value).toBe("2024-01-01");
   });
 
   it("should show validation errors when present", async () => {

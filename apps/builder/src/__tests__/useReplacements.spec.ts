@@ -7,10 +7,6 @@ describe("useReplacements", () => {
     projectName: "Test Project",
     featureName: "Test Feature",
     featureSlug: "test-feature",
-    owner: "Test Owner",
-    repoUrl: "https://github.com/test/repo",
-    stack: "Vue 3, TypeScript",
-    dateIso: "2024-01-01",
     requirements: "Test requirements for the project",
   };
 
@@ -38,11 +34,11 @@ describe("useReplacements", () => {
   it("should replace mixed tokens correctly", () => {
     const {replaceTokens} = useReplacements(mockGlobalInputs, mockPhaseInputs);
     const template =
-      "Project: [PROJECT_NAME], Custom: [CUSTOM_TOKEN], Stack: [STACK]";
+      "Project: [PROJECT_NAME], Custom: [CUSTOM_TOKEN], Requirements: [REQUIREMENTS]";
     const result = replaceTokens(template);
 
     expect(result).toBe(
-      "Project: Test Project, Custom: Custom Value, Stack: Vue 3, TypeScript"
+      "Project: Test Project, Custom: Custom Value, Requirements: Test requirements for the project"
     );
   });
 

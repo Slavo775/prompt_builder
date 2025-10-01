@@ -13,10 +13,6 @@ export interface GlobalInputs {
   projectName: string;
   featureName: string;
   featureSlug: string;
-  owner: string;
-  repoUrl?: string;
-  stack: string;
-  dateIso: string;
   requirements: string;
 }
 

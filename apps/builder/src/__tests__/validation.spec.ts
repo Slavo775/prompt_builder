@@ -15,17 +15,13 @@ describe("validation", () => {
     projectName: "Test Project",
     featureName: "Test Feature",
     featureSlug: "test-feature",
-    owner: "John Doe",
-    repoUrl: "https://github.com/test/repo",
-    stack: "Vue 3, TypeScript",
-    dateIso: "2024-01-01",
     requirements: "Test requirements for the project",
   };
 
   describe("validateGlobalInputs", () => {
     it("should validate complete global inputs", () => {
       const template =
-        "Project: [PROJECT_NAME], Feature: [FEATURE_NAME], Owner: [OWNER]";
+        "Project: [PROJECT_NAME], Feature: [FEATURE_NAME], Requirements: [REQUIREMENTS]";
       const errors = validateGlobalInputs(mockGlobalInputs, template);
 
       expect(errors).toHaveLength(0);
