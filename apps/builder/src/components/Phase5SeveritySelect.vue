@@ -1,8 +1,14 @@
 <template>
   <div class="phase5-severity-select">
-    <label for="phase5-severity" class="phase5-severity-select__label">
+    <label
+      for="phase5-severity"
+      class="phase5-severity-select__label"
+    >
       Severity
-      <span class="phase5-severity-select__required" aria-label="required">
+      <span
+        class="phase5-severity-select__required"
+        aria-label="required"
+      >
         *
       </span>
     </label>
@@ -19,12 +25,16 @@
       ]"
       :aria-describedby="ariaDescribedBy"
       :aria-invalid="ariaInvalid"
-      @change="handleChange">
-      <option value="">Select severity level</option>
+      @change="handleChange"
+    >
+      <option value="">
+        Select severity level
+      </option>
       <option
         v-for="severity in severityOptions"
         :key="severity.value"
-        :value="severity.value">
+        :value="severity.value"
+      >
         {{ severity.label }}
       </option>
     </select>
@@ -33,7 +43,8 @@
     <div
       v-if="!errorMessage"
       id="phase5-severity-help"
-      class="phase5-severity-select__help">
+      class="phase5-severity-select__help"
+    >
       Impact level of the bug
     </div>
 
@@ -42,7 +53,8 @@
       v-if="errorMessage"
       id="phase5-severity-error"
       class="phase5-severity-select__error"
-      role="alert">
+      role="alert"
+    >
       {{ errorMessage }}
     </div>
   </div>

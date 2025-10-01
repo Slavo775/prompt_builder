@@ -1,11 +1,15 @@
 <template>
   <div class="phase5-input-field">
-    <label :for="fieldId" class="phase5-input-field__label">
+    <label
+      :for="fieldId"
+      class="phase5-input-field__label"
+    >
       {{ fieldConfig.label }}
       <span
         v-if="fieldConfig.required"
         class="phase5-input-field__required"
-        aria-label="required">
+        aria-label="required"
+      >
         *
       </span>
     </label>
@@ -27,7 +31,8 @@
         ]"
         :aria-describedby="ariaDescribedBy"
         :aria-invalid="ariaInvalid"
-        @input="handleInput" />
+        @input="handleInput"
+      >
 
       <!-- Textarea -->
       <textarea
@@ -46,7 +51,8 @@
         ]"
         :aria-describedby="ariaDescribedBy"
         :aria-invalid="ariaInvalid"
-        @input="handleInput" />
+        @input="handleInput"
+      />
 
       <!-- Select -->
       <select
@@ -63,12 +69,16 @@
         ]"
         :aria-describedby="ariaDescribedBy"
         :aria-invalid="ariaInvalid"
-        @change="handleInput">
-        <option value="">Select {{ fieldConfig.label.toLowerCase() }}</option>
+        @change="handleInput"
+      >
+        <option value="">
+          Select {{ fieldConfig.label.toLowerCase() }}
+        </option>
         <option
           v-for="option in fieldConfig.options"
           :key="option"
-          :value="option">
+          :value="option"
+        >
           {{ option }}
         </option>
       </select>
@@ -90,7 +100,8 @@
         ]"
         :aria-describedby="ariaDescribedBy"
         :aria-invalid="ariaInvalid"
-        @input="handleInput" />
+        @input="handleInput"
+      >
 
       <!-- Commit SHA Input -->
       <input
@@ -108,14 +119,16 @@
         ]"
         :aria-describedby="ariaDescribedBy"
         :aria-invalid="ariaInvalid"
-        @input="handleInput" />
+        @input="handleInput"
+      >
     </div>
 
     <!-- Help Text -->
     <div
       v-if="fieldConfig.helpText && !errorMessage"
       :id="`${fieldId}-help`"
-      class="phase5-input-field__help">
+      class="phase5-input-field__help"
+    >
       {{ fieldConfig.helpText }}
     </div>
 
@@ -124,7 +137,8 @@
       v-if="errorMessage"
       :id="`${fieldId}-error`"
       class="phase5-input-field__error"
-      role="alert">
+      role="alert"
+    >
       {{ errorMessage }}
     </div>
   </div>

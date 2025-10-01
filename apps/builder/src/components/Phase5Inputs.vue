@@ -1,109 +1,131 @@
 <template>
   <div :class="['phase5-inputs', {'phase5-inputs--compact': compact}]">
-    <h3 class="phase5-inputs__title">Phase 5 - Fix Report Inputs</h3>
+    <h3 class="phase5-inputs__title">
+      Phase 5 - Fix Report Inputs
+    </h3>
 
     <div class="phase5-inputs__sections">
       <!-- Bug Context Section -->
       <div class="phase5-inputs__section">
-        <h4 class="phase5-inputs__section-title">Bug Context</h4>
+        <h4 class="phase5-inputs__section-title">
+          Bug Context
+        </h4>
         <div class="phase5-inputs__fields">
           <Phase5InputField
             :model-value="inputs.bugTitle"
             :field-config="getFieldConfig('bugTitle')"
             :disabled="disabled"
             :error-message="getFieldError('bugTitle')"
-            @update:model-value="updateInput('bugTitle', $event)" />
+            @update:model-value="updateInput('bugTitle', $event)"
+          />
           <Phase5InputField
             :model-value="inputs.commitSha"
             :field-config="getFieldConfig('commitSha')"
             :disabled="disabled"
             :error-message="getFieldError('commitSha')"
-            @update:model-value="updateInput('commitSha', $event)" />
+            @update:model-value="updateInput('commitSha', $event)"
+          />
           <Phase5InputField
             :model-value="inputs.browserOs"
             :field-config="getFieldConfig('browserOs')"
             :disabled="disabled"
             :error-message="getFieldError('browserOs')"
-            @update:model-value="updateInput('browserOs', $event)" />
+            @update:model-value="updateInput('browserOs', $event)"
+          />
           <Phase5InputField
             :model-value="inputs.urlRoute"
             :field-config="getFieldConfig('urlRoute')"
             :disabled="disabled"
             :error-message="getFieldError('urlRoute')"
-            @update:model-value="updateInput('urlRoute', $event)" />
+            @update:model-value="updateInput('urlRoute', $event)"
+          />
           <Phase5SeveritySelect
             :model-value="inputs.severity"
             :disabled="disabled"
             :error-message="getFieldError('severity')"
-            @update:model-value="updateInput('severity', $event)" />
+            @update:model-value="updateInput('severity', $event)"
+          />
         </div>
       </div>
 
       <!-- PRD Context Section -->
       <div class="phase5-inputs__section">
-        <h4 class="phase5-inputs__section-title">PRD Context</h4>
+        <h4 class="phase5-inputs__section-title">
+          PRD Context
+        </h4>
         <div class="phase5-inputs__fields">
           <Phase5InputField
             :model-value="inputs.prdFile"
             :field-config="getFieldConfig('prdFile')"
             :disabled="disabled"
             :error-message="getFieldError('prdFile')"
-            @update:model-value="updateInput('prdFile', $event)" />
+            @update:model-value="updateInput('prdFile', $event)"
+          />
           <Phase5InputField
             :model-value="inputs.featureName"
             :field-config="getFieldConfig('featureName')"
             :disabled="disabled"
             :error-message="getFieldError('featureName')"
-            @update:model-value="updateInput('featureName', $event)" />
+            @update:model-value="updateInput('featureName', $event)"
+          />
           <Phase5InputField
             :model-value="inputs.prdGoalsRelevant"
             :field-config="getFieldConfig('prdGoalsRelevant')"
             :disabled="disabled"
             :error-message="getFieldError('prdGoalsRelevant')"
-            @update:model-value="updateInput('prdGoalsRelevant', $event)" />
+            @update:model-value="updateInput('prdGoalsRelevant', $event)"
+          />
           <Phase5InputField
             :model-value="inputs.prdNongoalsRelevant"
             :field-config="getFieldConfig('prdNongoalsRelevant')"
             :disabled="disabled"
             :error-message="getFieldError('prdNongoalsRelevant')"
-            @update:model-value="updateInput('prdNongoalsRelevant', $event)" />
+            @update:model-value="updateInput('prdNongoalsRelevant', $event)"
+          />
           <Phase5InputField
             :model-value="inputs.prdFrIds"
             :field-config="getFieldConfig('prdFrIds')"
             :disabled="disabled"
             :error-message="getFieldError('prdFrIds')"
-            @update:model-value="updateInput('prdFrIds', $event)" />
+            @update:model-value="updateInput('prdFrIds', $event)"
+          />
           <Phase5InputField
             :model-value="inputs.prdTypesStable"
             :field-config="getFieldConfig('prdTypesStable')"
             :disabled="disabled"
             :error-message="getFieldError('prdTypesStable')"
-            @update:model-value="updateInput('prdTypesStable', $event)" />
+            @update:model-value="updateInput('prdTypesStable', $event)"
+          />
         </div>
       </div>
 
       <!-- RFC Context Section -->
       <div class="phase5-inputs__section">
-        <h4 class="phase5-inputs__section-title">RFC Context</h4>
+        <h4 class="phase5-inputs__section-title">
+          RFC Context
+        </h4>
         <div class="phase5-inputs__fields">
           <Phase5InputField
             :model-value="inputs.rfcFile"
             :field-config="getFieldConfig('rfcFile')"
             :disabled="disabled"
             :error-message="getFieldError('rfcFile')"
-            @update:model-value="updateInput('rfcFile', $event)" />
+            @update:model-value="updateInput('rfcFile', $event)"
+          />
           <Phase5InputField
             :model-value="inputs.rfcAllowlistPaths"
             :field-config="getFieldConfig('rfcAllowlistPaths')"
             :disabled="disabled"
             :error-message="getFieldError('rfcAllowlistPaths')"
-            @update:model-value="updateInput('rfcAllowlistPaths', $event)" />
+            @update:model-value="updateInput('rfcAllowlistPaths', $event)"
+          />
           <Phase5InputField
             :model-value="inputs.rfcZeroInfraSummary"
             :field-config="getFieldConfig('rfcZeroInfraSummary')"
             :disabled="disabled"
             :error-message="getFieldError('rfcZeroInfraSummary')"
-            @update:model-value="updateInput('rfcZeroInfraSummary', $event)" />
+            @update:model-value="updateInput('rfcZeroInfraSummary', $event)"
+          />
           <Phase5InputField
             :model-value="inputs.rfcOptionalAdjustments"
             :field-config="getFieldConfig('rfcOptionalAdjustments')"
@@ -111,38 +133,45 @@
             :error-message="getFieldError('rfcOptionalAdjustments')"
             @update:model-value="
               updateInput('rfcOptionalAdjustments', $event)
-            " />
+            "
+          />
         </div>
       </div>
 
       <!-- Bug Reproduction Section -->
       <div class="phase5-inputs__section">
-        <h4 class="phase5-inputs__section-title">Bug Reproduction</h4>
+        <h4 class="phase5-inputs__section-title">
+          Bug Reproduction
+        </h4>
         <div class="phase5-inputs__fields">
           <Phase5InputField
             :model-value="inputs.reproSteps"
             :field-config="getFieldConfig('reproSteps')"
             :disabled="disabled"
             :error-message="getFieldError('reproSteps')"
-            @update:model-value="updateInput('reproSteps', $event)" />
+            @update:model-value="updateInput('reproSteps', $event)"
+          />
           <Phase5InputField
             :model-value="inputs.expectedBehavior"
             :field-config="getFieldConfig('expectedBehavior')"
             :disabled="disabled"
             :error-message="getFieldError('expectedBehavior')"
-            @update:model-value="updateInput('expectedBehavior', $event)" />
+            @update:model-value="updateInput('expectedBehavior', $event)"
+          />
           <Phase5InputField
             :model-value="inputs.actualBehavior"
             :field-config="getFieldConfig('actualBehavior')"
             :disabled="disabled"
             :error-message="getFieldError('actualBehavior')"
-            @update:model-value="updateInput('actualBehavior', $event)" />
+            @update:model-value="updateInput('actualBehavior', $event)"
+          />
           <Phase5InputField
             :model-value="inputs.suspectedRootCause"
             :field-config="getFieldConfig('suspectedRootCause')"
             :disabled="disabled"
             :error-message="getFieldError('suspectedRootCause')"
-            @update:model-value="updateInput('suspectedRootCause', $event)" />
+            @update:model-value="updateInput('suspectedRootCause', $event)"
+          />
         </div>
       </div>
     </div>
@@ -151,7 +180,8 @@
     <div
       v-if="showValidation && !validationState.isValid"
       class="phase5-inputs__validation-summary"
-      role="alert">
+      role="alert"
+    >
       <h5 class="phase5-inputs__validation-title">
         Please fix the following errors:
       </h5>
@@ -159,7 +189,8 @@
         <li
           v-for="error in validationState.errors"
           :key="error.field"
-          class="phase5-inputs__validation-item">
+          class="phase5-inputs__validation-item"
+        >
           {{ error.message }}
         </li>
       </ul>
