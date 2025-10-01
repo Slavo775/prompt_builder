@@ -33,8 +33,8 @@ vi.mock("../components/PhasePreview.vue", () => ({
 
 describe("PhaseView", () => {
   const mockPhase: Phase = {
-    id: "0",
-    title: "Discovery",
+    id: "6",
+    title: "Fix TSC/ESLint/Tests",
     template: "Test template with [PROJECT_NAME]",
     overridesEnabled: false,
     inputs: {CUSTOM_TOKEN: "Custom Value"},

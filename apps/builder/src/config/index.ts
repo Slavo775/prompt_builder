@@ -9,6 +9,7 @@ import {PHASE_2_5_CONFIG} from "./phases/phase-2.5";
 import {PHASE_3_CONFIG} from "./phases/phase-3";
 import {PHASE_4_CONFIG} from "./phases/phase-4";
 import {PHASE_5_CONFIG} from "./phases/phase-5";
+import {PHASE_6_CONFIG} from "./phases/phase-6";
 
 // Export all phase configurations
 export const PHASE_CONFIGS: Record<PhaseId, PhaseConfig> = {
@@ -19,6 +20,7 @@ export const PHASE_CONFIGS: Record<PhaseId, PhaseConfig> = {
   "3": PHASE_3_CONFIG,
   "4": PHASE_4_CONFIG,
   "5": PHASE_5_CONFIG,
+  "6": PHASE_6_CONFIG,
 };
 
 // Export individual configurations for direct access

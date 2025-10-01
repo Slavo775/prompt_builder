@@ -605,7 +605,7 @@ export const PHASE_CONFIG_SCHEMA = {
   type: "object",
   required: ["id", "title", "template"],
   properties: {
-    id: {type: "string", enum: ["0", "1", "2", "2.5", "3", "4", "5"]},
+    id: {type: "string", enum: ["0", "1", "2", "2.5", "3", "4", "5", "6"]},
     title: {type: "string", minLength: 1},
     template: {type: "string", minLength: 1},
     description: {type: "string"},
