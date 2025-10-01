@@ -11,25 +11,20 @@
             {'phase-view__toggle--active': phase.overridesEnabled},
           ]"
           :aria-pressed="phase.overridesEnabled"
-          @click="toggleOverrides"
-        >
+          @click="toggleOverrides">
           {{ phase.overridesEnabled ? "Custom Template" : "Default Template" }}
         </button>
         <button
           v-if="phase.overridesEnabled"
           class="phase-view__reset"
-          @click="resetToDefault"
-        >
+          @click="resetToDefault">
           Reset to Default
         </button>
       </div>
     </div>
 
     <div class="phase-view__content">
-      <PhaseTemplateEditor
-        :phase="phase"
-        @update:template="updateTemplate"
-      />
+      <PhaseTemplateEditor :phase="phase" @update:template="updateTemplate" />
 
       <!-- Phase 5 Specialized Inputs -->
       <Phase5InputsComponent
@@ -37,8 +32,7 @@
         :model-value="phase5Inputs"
         :disabled="false"
         :show-validation="true"
-        @update:model-value="updatePhase5Inputs"
-      />
+        @update:model-value="updatePhase5Inputs" />
 
       <!-- Standard Phase Inputs -->
       <PhaseInputs
@@ -46,14 +40,12 @@
         :phase="phase"
         :global-inputs="globalInputs"
         :template="phase.template"
-        @update:phase="updatePhase"
-      />
+        @update:phase="updatePhase" />
 
       <PhasePreview
         :rendered-template="renderedTemplate"
         :last-output="phase.lastOutput"
-        @save-output="saveOutput"
-      />
+        @save-output="saveOutput" />
     </div>
   </div>
 </template>

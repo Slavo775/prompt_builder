@@ -11,7 +11,7 @@ NON-NEGOTIABLE CONSTRAINTS
 Do NOT modify any DN-T files (.gitignore and all config/dotfiles included).
 Any infra/config changes must be PROPOSALS only here, with minimal diffs.
 OBJECTIVE
-Create RFC_[FEATURE_SLUG].md at repo root.
+Create RFC_[FEATURE_SLUG].md under AIDocuments/[FEATURE_NAME].
 
 CONTENTS
 

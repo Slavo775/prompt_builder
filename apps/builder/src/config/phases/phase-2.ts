@@ -14,7 +14,7 @@ OBJECTIVE
 Create a PRD for: [REQUIREMENTS]
 
 OUTPUT
-Write PRD_[FEATURE_SLUG].md at repo root with:
+Write PRD_[FEATURE_SLUG].md under AIDocuments/[FEATURE_NAME] with:
 
 Background & Problem Statement
 Goals and Non-Goals
