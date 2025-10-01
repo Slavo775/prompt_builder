@@ -105,3 +105,4 @@ describe("PhaseView", () => {
     expect(wrapper.emitted("update:phase")).toHaveLength(2);
   });
 });
+

@@ -17,3 +17,4 @@ describe("App", () => {
     expect(wrapper.find('[data-testid="index-page"]').exists()).toBe(true);
   });
 });
+

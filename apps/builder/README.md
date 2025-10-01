@@ -49,3 +49,4 @@ Built with:
 - **Composables**: Reusable logic for phases, replacements, and storage
 - **Types**: Comprehensive TypeScript definitions
 - **Tests**: Vitest + @testing-library/vue for testing
+
