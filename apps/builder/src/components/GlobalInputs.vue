@@ -1,14 +1,11 @@
 <template>
   <div class="global-inputs">
-    <h3 class="global-inputs__title">
-      Global Inputs
-    </h3>
+    <h3 class="global-inputs__title">Global Inputs</h3>
     <div class="global-inputs__form">
       <div class="global-inputs__input-group">
-        <label
-          for="project-name"
-          class="global-inputs__label"
-        >Project Name</label>
+        <label for="project-name" class="global-inputs__label"
+          >Project Name</label
+        >
         <input
           id="project-name"
           :value="globalInputs.projectName"
@@ -27,22 +24,19 @@
               'projectName',
               ($event.target as HTMLInputElement).value
             )
-          "
-        >
+          " />
         <div
           v-if="getFieldError('project-name')"
           id="project-name-error"
           class="global-inputs__error"
-          role="alert"
-        >
+          role="alert">
           {{ getFieldError("project-name") }}
         </div>
       </div>
       <div class="global-inputs__input-group">
-        <label
-          for="feature-name"
-          class="global-inputs__label"
-        >Feature Name</label>
+        <label for="feature-name" class="global-inputs__label"
+          >Feature Name</label
+        >
         <input
           id="feature-name"
           :value="globalInputs.featureName"
@@ -61,22 +55,19 @@
               'featureName',
               ($event.target as HTMLInputElement).value
             )
-          "
-        >
+          " />
         <div
           v-if="getFieldError('feature-name')"
           id="feature-name-error"
           class="global-inputs__error"
-          role="alert"
-        >
+          role="alert">
           {{ getFieldError("feature-name") }}
         </div>
       </div>
       <div class="global-inputs__input-group">
-        <label
-          for="feature-slug"
-          class="global-inputs__label"
-        >Feature Slug</label>
+        <label for="feature-slug" class="global-inputs__label"
+          >Feature Slug</label
+        >
         <input
           id="feature-slug"
           :value="globalInputs.featureSlug"
@@ -95,22 +86,17 @@
               'featureSlug',
               ($event.target as HTMLInputElement).value
             )
-          "
-        >
+          " />
         <div
           v-if="getFieldError('feature-slug')"
           id="feature-slug-error"
           class="global-inputs__error"
-          role="alert"
-        >
+          role="alert">
           {{ getFieldError("feature-slug") }}
         </div>
       </div>
       <div class="global-inputs__input-group">
-        <label
-          for="owner"
-          class="global-inputs__label"
-        >Owner</label>
+        <label for="owner" class="global-inputs__label">Owner</label>
         <input
           id="owner"
           :value="globalInputs.owner"
@@ -127,22 +113,19 @@
               'owner',
               ($event.target as HTMLInputElement).value
             )
-          "
-        >
+          " />
         <div
           v-if="getFieldError('owner')"
           id="owner-error"
           class="global-inputs__error"
-          role="alert"
-        >
+          role="alert">
           {{ getFieldError("owner") }}
         </div>
       </div>
       <div class="global-inputs__input-group">
-        <label
-          for="repo-url"
-          class="global-inputs__label"
-        >Repo URL (optional)</label>
+        <label for="repo-url" class="global-inputs__label"
+          >Repo URL (optional)</label
+        >
         <input
           id="repo-url"
           :value="globalInputs.repoUrl"
@@ -154,14 +137,10 @@
               'repoUrl',
               ($event.target as HTMLInputElement).value
             )
-          "
-        >
+          " />
       </div>
       <div class="global-inputs__input-group">
-        <label
-          for="stack"
-          class="global-inputs__label"
-        >Stack</label>
+        <label for="stack" class="global-inputs__label">Stack</label>
         <input
           id="stack"
           :value="globalInputs.stack"
@@ -178,22 +157,17 @@
               'stack',
               ($event.target as HTMLInputElement).value
             )
-          "
-        >
+          " />
         <div
           v-if="getFieldError('stack')"
           id="stack-error"
           class="global-inputs__error"
-          role="alert"
-        >
+          role="alert">
           {{ getFieldError("stack") }}
         </div>
       </div>
       <div class="global-inputs__input-group">
-        <label
-          for="date"
-          class="global-inputs__label"
-        >Date</label>
+        <label for="date" class="global-inputs__label">Date</label>
         <input
           id="date"
           :value="globalInputs.dateIso"
@@ -209,14 +183,12 @@
               'dateIso',
               ($event.target as HTMLInputElement).value
             )
-          "
-        >
+          " />
         <div
           v-if="getFieldError('date')"
           id="date-error"
           class="global-inputs__error"
-          role="alert"
-        >
+          role="alert">
           {{ getFieldError("date") }}
         </div>
       </div>
@@ -229,14 +201,12 @@
           :aria-described-by="
             getFieldError('requirements') ? 'requirements-error' : undefined
           "
-          @update:model-value="updateGlobalInput('requirements', $event)"
-        />
+          @update:model-value="updateGlobalInput('requirements', $event)" />
         <div
           v-if="getFieldError('requirements')"
           id="requirements-error"
           class="global-inputs__error"
-          role="alert"
-        >
+          role="alert">
           {{ getFieldError("requirements") }}
         </div>
       </div>
