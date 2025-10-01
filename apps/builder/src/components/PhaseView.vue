@@ -11,41 +11,65 @@
             {'phase-view__toggle--active': phase.overridesEnabled},
           ]"
           :aria-pressed="phase.overridesEnabled"
-          @click="toggleOverrides">
+          @click="toggleOverrides"
+        >
           {{ phase.overridesEnabled ? "Custom Template" : "Default Template" }}
         </button>
         <button
           v-if="phase.overridesEnabled"
           class="phase-view__reset"
-          @click="resetToDefault">
+          @click="resetToDefault"
+        >
           Reset to Default
         </button>
       </div>
     </div>
 
     <div class="phase-view__content">
-      <PhaseTemplateEditor :phase="phase" @update:template="updateTemplate" />
+      <PhaseTemplateEditor
+        :phase="phase"
+        @update:template="updateTemplate"
+      />
 
+      <!-- Phase 5 Specialized Inputs -->
+      <Phase5InputsComponent
+        v-if="phase.id === '5'"
+        :model-value="phase5Inputs"
+        :disabled="false"
+        :show-validation="true"
+        @update:model-value="updatePhase5Inputs"
+      />
+
+      <!-- Standard Phase Inputs -->
       <PhaseInputs
+        v-else
         :phase="phase"
         :global-inputs="globalInputs"
         :template="phase.template"
-        @update:phase="updatePhase" />
+        @update:phase="updatePhase"
+      />
 
       <PhasePreview
         :rendered-template="renderedTemplate"
         :last-output="phase.lastOutput"
-        @save-output="saveOutput" />
+        @save-output="saveOutput"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
+import {computed, ref, watch} from "vue";
 import type {Phase, GlobalInputs} from "../types";
+import type {Phase5Inputs} from "../config/types";
 import {useReplacements} from "../composables/useReplacements";
+import {
+  createEmptyPhase5Inputs,
+  phase5InputsToTokenMap,
+} from "../utils/phase5Validation";
 import PhaseTemplateEditor from "./PhaseTemplateEditor.vue";
 import PhaseInputs from "./PhaseInputs.vue";
+import Phase5InputsComponent from "./Phase5Inputs.vue";
 import PhasePreview from "./PhasePreview.vue";
 
 interface Props {
@@ -59,8 +83,73 @@ const emit = defineEmits<{
   "update:phase": [phase: Phase];
 }>();
 
+// Phase 5 inputs state
+const phase5Inputs = ref<Phase5Inputs>(createEmptyPhase5Inputs());
+
+// Initialize Phase 5 inputs from phase data
+const initializePhase5Inputs = () => {
+  if (props.phase.id === "5") {
+    // Auto-generate PRD and RFC file names from global inputs
+    const featureSlug = props.globalInputs.featureSlug || "feature";
+    const prdFileName = `PRD_${featureSlug}.md`;
+    const rfcFileName = `RFC_${featureSlug}.md`;
+
+    // Convert phase inputs to Phase 5 inputs
+    const inputs: Phase5Inputs = {
+      bugTitle: props.phase.inputs.BUG_TITLE || "",
+      commitSha: props.phase.inputs.COMMIT_SHA || "",
+      browserOs: props.phase.inputs.BROWSER_OS || "",
+      urlRoute: props.phase.inputs.URL_ROUTE || "",
+      severity: (props.phase.inputs.SEVERITY as any) || "minor",
+      prdFile: props.phase.inputs.PRD_FILE || prdFileName,
+      featureName: props.phase.inputs.FEATURE_NAME || "",
+      prdGoalsRelevant: props.phase.inputs.PRD_GOALS_RELEVANT || "",
+      prdNongoalsRelevant: props.phase.inputs.PRD_NONGOALS_RELEVANT || "",
+      prdFrIds: props.phase.inputs.PRD_FR_IDS || "",
+      prdTypesStable: props.phase.inputs.PRD_TYPES_STABLE || "",
+      rfcFile: props.phase.inputs.RFC_FILE || rfcFileName,
+      rfcAllowlistPaths: props.phase.inputs.RFC_ALLOWLIST_PATHS || "",
+      rfcZeroInfraSummary: props.phase.inputs.RFC_ZERO_INFRA_SUMMARY || "",
+      rfcOptionalAdjustments: props.phase.inputs.RFC_OPTIONAL_ADJUSTMENTS || "",
+      reproSteps: props.phase.inputs.REPRO_STEPS || "",
+      expectedBehavior: props.phase.inputs.EXPECTED_BEHAVIOR || "",
+      actualBehavior: props.phase.inputs.ACTUAL_BEHAVIOR || "",
+      suspectedRootCause: props.phase.inputs.SUSPECTED_ROOT_CAUSE || "",
+    };
+    phase5Inputs.value = inputs;
+  }
+};
+
+// Initialize on mount
+initializePhase5Inputs();
+
+// Watch for phase changes
+watch(
+  () => props.phase.id,
+  () => {
+    initializePhase5Inputs();
+  }
+);
+
+// Watch for global inputs changes to update file names
+watch(
+  () => props.globalInputs.featureSlug,
+  () => {
+    if (props.phase.id === "5") {
+      initializePhase5Inputs();
+    }
+  }
+);
+
 const renderedTemplate = computed(() => {
-  // Call useReplacements inside computed to ensure reactivity
+  // For Phase 5, use specialized token replacement
+  if (props.phase.id === "5") {
+    const phase5TokenMap = phase5InputsToTokenMap(phase5Inputs.value);
+    const {replaceTokens} = useReplacements(props.globalInputs, phase5TokenMap);
+    return replaceTokens(props.phase.template);
+  }
+
+  // For other phases, use standard replacement
   const {replaceTokens} = useReplacements(
     props.globalInputs,
     props.phase.inputs
@@ -98,6 +187,19 @@ const updateTemplate = (template: string) => {
 
 const updatePhase = (phase: Phase) => {
   emit("update:phase", phase);
+};
+
+const updatePhase5Inputs = (inputs: Phase5Inputs) => {
+  phase5Inputs.value = inputs;
+
+  // Convert Phase 5 inputs to phase inputs format
+  const phaseInputs = phase5InputsToTokenMap(inputs);
+
+  const updatedPhase = {
+    ...props.phase,
+    inputs: phaseInputs,
+  };
+  emit("update:phase", updatedPhase);
 };
 
 const saveOutput = (output: string) => {

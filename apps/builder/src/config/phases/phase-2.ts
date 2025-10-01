@@ -11,7 +11,7 @@ NON-NEGOTIABLE CONSTRAINTS
 Align with COMPREHENSIVE_ANALYSIS.md and REPO_CONSTRAINTS.md.
 Do NOT prescribe infra/config edits; if needed, mark as risk and defer to RFC.
 OBJECTIVE
-Create a PRD for: [INSERT SPECIFIC REQUIREMENT]
+Create a PRD for: [REQUIREMENTS]
 
 OUTPUT
 Write PRD_[FEATURE_SLUG].md at repo root with:

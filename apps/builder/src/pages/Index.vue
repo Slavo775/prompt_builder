@@ -3,27 +3,31 @@
     <AppHeader
       :has-unsaved-changes="hasUnsavedChanges"
       @export="exportData"
-      @import="importData" />
+      @import="importData"
+    />
 
     <div class="app__main">
       <aside class="app__sidebar">
         <PhaseNavigation
           :phases-list="phasesList"
           :current-phase-id="currentPhaseId"
-          @phase-change="currentPhaseId = $event" />
+          @phase-change="currentPhaseId = $event"
+        />
 
         <GlobalInputs
           :global-inputs="globalInputs"
           :template="currentPhase.template"
           :phase-inputs="currentPhase.inputs"
-          @update:global-inputs="updateGlobalInputs" />
+          @update:global-inputs="updateGlobalInputs"
+        />
       </aside>
 
       <main class="app__content">
         <PhaseView
           :phase="currentPhase"
           :global-inputs="globalInputs"
-          @update:phase="updateCurrentPhase" />
+          @update:phase="updateCurrentPhase"
+        />
       </main>
     </div>
 
@@ -32,7 +36,8 @@
       type="file"
       accept=".json"
       style="display: none"
-      @change="handleFileImport" />
+      @change="handleFileImport"
+    >
   </div>
 </template>
 

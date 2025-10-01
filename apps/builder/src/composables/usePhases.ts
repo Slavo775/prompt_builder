@@ -52,7 +52,7 @@ export function usePhases(phases: PhaseMap, globalInputs: GlobalInputs) {
   };
 
   const phasesList = computed(() => {
-    return ["0", "1", "2", "2.5", "3", "4"].map((id) =>
+    return ["0", "1", "2", "2.5", "3", "4", "5"].map((id) =>
       getPhase(id as PhaseId)
     );
   });

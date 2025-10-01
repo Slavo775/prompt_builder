@@ -1,7 +1,7 @@
 import {PHASE_CONFIGS} from "../config";
 
 export interface Phase {
-  id: "0" | "1" | "2" | "2.5" | "3" | "4";
+  id: "0" | "1" | "2" | "2.5" | "3" | "4" | "5";
   title: string;
   template: string;
   overridesEnabled: boolean;
@@ -34,7 +34,7 @@ export interface PhaseBuilderState {
   currentPhaseId: string;
 }
 
-export type PhaseId = "0" | "1" | "2" | "2.5" | "3" | "4";
+export type PhaseId = "0" | "1" | "2" | "2.5" | "3" | "4" | "5";
 
 export const DEFAULT_PHASE_TITLES: Record<PhaseId, string> = {
   "0": PHASE_CONFIGS[0].description,
@@ -48,6 +48,8 @@ export const DEFAULT_PHASE_TITLES: Record<PhaseId, string> = {
   "3": PHASE_CONFIGS[3].description,
 
   "4": PHASE_CONFIGS[4].description,
+
+  "5": PHASE_CONFIGS[5].description,
 } as const;
 
 export const DEFAULT_PHASE_TEMPLATES: Record<PhaseId, string> = {
@@ -62,4 +64,6 @@ export const DEFAULT_PHASE_TEMPLATES: Record<PhaseId, string> = {
   "3": PHASE_CONFIGS[3].template,
 
   "4": PHASE_CONFIGS[4].template,
+
+  "5": PHASE_CONFIGS[5].template,
 } as const;

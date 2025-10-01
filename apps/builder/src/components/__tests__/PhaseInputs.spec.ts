@@ -13,6 +13,9 @@ vi.mock("../../composables/useValidation", () => ({
         errors: [],
         warnings: [],
       },
+      effect: vi.fn(),
+      [Symbol.for("ComputedRefSymbol")]: true,
+      [Symbol.for("RefSymbol")]: true,
     },
   })),
 }));
@@ -130,6 +133,9 @@ describe("PhaseInputs", () => {
           ],
           warnings: [],
         },
+        effect: vi.fn(),
+        [Symbol.for("ComputedRefSymbol")]: true,
+        [Symbol.for("RefSymbol")]: true,
       },
     });
 
@@ -165,6 +171,9 @@ describe("PhaseInputs", () => {
           ],
           warnings: [],
         },
+        effect: vi.fn(),
+        [Symbol.for("ComputedRefSymbol")]: true,
+        [Symbol.for("RefSymbol")]: true,
       },
     });
 
@@ -193,6 +202,9 @@ describe("PhaseInputs", () => {
           errors: [],
           warnings: [],
         },
+        effect: vi.fn(),
+        [Symbol.for("ComputedRefSymbol")]: true,
+        [Symbol.for("RefSymbol")]: true,
       },
     });
 
@@ -217,6 +229,9 @@ describe("PhaseInputs", () => {
           errors: [],
           warnings: [],
         },
+        effect: vi.fn(),
+        [Symbol.for("ComputedRefSymbol")]: true,
+        [Symbol.for("RefSymbol")]: true,
       },
     }));
     useValidation.mockImplementation(mockUseValidationInstance);
@@ -256,6 +271,9 @@ describe("PhaseInputs", () => {
           ],
           warnings: [],
         },
+        effect: vi.fn(),
+        [Symbol.for("ComputedRefSymbol")]: true,
+        [Symbol.for("RefSymbol")]: true,
       },
     });
 
