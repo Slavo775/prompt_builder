@@ -8,8 +8,13 @@
     ]"
     :data-view="viewType"
     role="tabpanel"
-    :aria-labelledby="`${viewType}-tab`">
-    <slot :view-type="viewType" :view-state="viewState" :disabled="disabled" />
+    :aria-labelledby="`${viewType}-tab`"
+  >
+    <slot
+      :view-type="viewType"
+      :view-state="viewState"
+      :disabled="disabled"
+    />
   </div>
 </template>
 

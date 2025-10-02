@@ -4,27 +4,34 @@
       :has-unsaved-changes="hasUnsavedChanges"
       :current-view="currentView"
       @export="exportData"
-      @import="importData" />
+      @import="importData"
+    />
 
     <TabNavigation
       :current-view="currentView"
-      @view-change="handleViewChange" />
+      @view-change="handleViewChange"
+    />
 
     <div class="app__main">
-      <ViewContainer :view-type="currentView" :view-state="currentViewStateRef">
+      <ViewContainer
+        :view-type="currentView"
+        :view-state="currentViewStateRef"
+      >
         <template #default="{viewType}">
           <aside class="app__sidebar">
             <PhaseNavigation
               :phases-list="phasesList"
               :current-phase-id="currentPhaseId"
               :view-type="viewType"
-              @phase-change="handlePhaseChange" />
+              @phase-change="handlePhaseChange"
+            />
 
             <GlobalInputs
               :global-inputs="globalInputs"
               :template="currentPhase.template"
               :phase-inputs="currentPhase.inputs"
-              @update:global-inputs="updateGlobalInputs" />
+              @update:global-inputs="updateGlobalInputs"
+            />
           </aside>
 
           <main class="app__content">
@@ -32,7 +39,8 @@
               :phase="currentPhase"
               :global-inputs="globalInputs"
               :view-type="viewType"
-              @update:phase="updateCurrentPhase" />
+              @update:phase="updateCurrentPhase"
+            />
           </main>
         </template>
       </ViewContainer>
@@ -43,7 +51,8 @@
       type="file"
       accept=".json"
       style="display: none"
-      @change="handleFileImport" />
+      @change="handleFileImport"
+    >
   </div>
 </template>
 

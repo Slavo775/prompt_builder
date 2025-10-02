@@ -2,7 +2,8 @@
   <nav
     class="tab-navigation"
     role="tablist"
-    :aria-label="ariaLabel || 'View navigation'">
+    :aria-label="ariaLabel || 'View navigation'"
+  >
     <button
       v-for="tab in tabs"
       :key="tab.id"
@@ -17,8 +18,12 @@
       :tabindex="currentView === tab.id ? 0 : -1"
       role="tab"
       @click="handleTabClick(tab.id)"
-      @keydown="handleKeyDown">
-      <span class="tab-navigation__icon" aria-hidden="true">{{
+      @keydown="handleKeyDown"
+    >
+      <span
+        class="tab-navigation__icon"
+        aria-hidden="true"
+      >{{
         tab.icon
       }}</span>
       <span class="tab-navigation__label">{{ tab.label }}</span>
