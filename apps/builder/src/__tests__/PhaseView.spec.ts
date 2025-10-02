@@ -46,6 +46,8 @@ describe("PhaseView", () => {
     featureName: "Test Feature",
     featureSlug: "test-feature",
     requirements: "Test Requirements",
+    packageManager: "pnpm",
+    isMonorepo: true,
   };
 
   it("should render all child components", () => {

@@ -9,11 +9,16 @@ export interface Phase {
   lastOutput: string;
 }
 
+// Package manager selection
+export type PackageManager = "npm" | "pnpm" | "yarn";
+
 export interface GlobalInputs {
   projectName: string;
   featureName: string;
   featureSlug: string;
   requirements: string;
+  packageManager: PackageManager;
+  isMonorepo: boolean;
 }
 
 export interface ReplacementMap {

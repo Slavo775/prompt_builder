@@ -10,6 +10,8 @@ interface LegacyGlobalInputs {
   stack?: string;
   dateIso?: string;
   requirements: string;
+  packageManager?: string;
+  isMonorepo?: boolean;
 }
 
 function migrateGlobalInputs(legacy: LegacyGlobalInputs): GlobalInputs {
@@ -18,6 +20,11 @@ function migrateGlobalInputs(legacy: LegacyGlobalInputs): GlobalInputs {
     featureName: legacy.featureName || "",
     featureSlug: legacy.featureSlug || "",
     requirements: legacy.requirements || "",
+    packageManager:
+      legacy.packageManager === "npm" || legacy.packageManager === "yarn"
+        ? legacy.packageManager
+        : "pnpm", // Default to pnpm for backward compatibility
+    isMonorepo: legacy.isMonorepo ?? true, // Default to true for backward compatibility
   };
 }
 
@@ -48,6 +55,8 @@ export function usePhaseBuilderStorage() {
       featureName: "",
       featureSlug: "",
       requirements: "",
+      packageManager: "pnpm",
+      isMonorepo: true,
     },
     currentPhaseId: "0",
   };

@@ -8,6 +8,8 @@ describe("useReplacements", () => {
     featureName: "Test Feature",
     featureSlug: "test-feature",
     requirements: "Test requirements for the project",
+    packageManager: "pnpm",
+    isMonorepo: true,
   };
 
   const mockPhaseInputs = {
@@ -50,6 +52,45 @@ describe("useReplacements", () => {
     expect(result).toBe("Requirements: Test requirements for the project");
   });
 
+  it("should replace package manager command tokens correctly", () => {
+    const {replaceTokens} = useReplacements(mockGlobalInputs, {});
+    const template = "Run: [PKG_LINT] and [PKG_TEST]";
+    const result = replaceTokens(template);
+
+    expect(result).toBe("Run: pnpm -w lint and pnpm -w test");
+  });
+
+  it("should generate different commands for npm single package", () => {
+    const npmGlobalInputs: GlobalInputs = {
+      ...mockGlobalInputs,
+      packageManager: "npm",
+      isMonorepo: false,
+    };
+    const {replaceTokens} = useReplacements(npmGlobalInputs, {});
+    const template =
+      "Commands: [PKG_LINT], [PKG_TYPECHECK], [PKG_TEST], [PKG_BUILD]";
+    const result = replaceTokens(template);
+
+    expect(result).toBe(
+      "Commands: npm run lint, npm run typecheck, npm run test, npm run build"
+    );
+  });
+
+  it("should generate different commands for yarn monorepo", () => {
+    const yarnGlobalInputs: GlobalInputs = {
+      ...mockGlobalInputs,
+      packageManager: "yarn",
+      isMonorepo: true,
+    };
+    const {replaceTokens} = useReplacements(yarnGlobalInputs, {});
+    const template = "Commands: [PKG_LINT], [PKG_TEST]";
+    const result = replaceTokens(template);
+
+    expect(result).toBe(
+      "Commands: yarn workspaces run lint, yarn workspaces run test"
+    );
+  });
+
   it("should leave unknown tokens unchanged", () => {
     const {replaceTokens} = useReplacements(mockGlobalInputs, {});
     const template = "Unknown: [UNKNOWN_TOKEN], Known: [PROJECT_NAME]";
@@ -68,6 +109,10 @@ describe("useReplacements", () => {
     expect(tokens).toContain("PROJECT_NAME");
     expect(tokens).toContain("FEATURE_NAME");
     expect(tokens).toContain("REQUIREMENTS");
+    expect(tokens).toContain("PKG_LINT");
+    expect(tokens).toContain("PKG_TYPECHECK");
+    expect(tokens).toContain("PKG_TEST");
+    expect(tokens).toContain("PKG_BUILD");
     expect(tokens).toContain("CUSTOM_TOKEN");
     expect(tokens).toContain("ANOTHER_TOKEN");
   });

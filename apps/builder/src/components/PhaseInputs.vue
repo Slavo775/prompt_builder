@@ -91,6 +91,8 @@ const props = withDefaults(defineProps<Props>(), {
     featureName: "",
     featureSlug: "",
     requirements: "",
+    packageManager: "pnpm",
+    isMonorepo: true,
   }),
   template: "",
 });

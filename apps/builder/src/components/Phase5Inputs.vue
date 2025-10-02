@@ -12,28 +12,28 @@
         </h4>
         <div class="phase5-inputs__fields">
           <Phase5InputField
-            :model-value="inputs.bugTitle"
+            :model-value="inputs.bugTitle || ''"
             :field-config="getFieldConfig('bugTitle')"
             :disabled="disabled"
             :error-message="getFieldError('bugTitle')"
             @update:model-value="updateInput('bugTitle', $event)"
           />
           <Phase5InputField
-            :model-value="inputs.commitSha"
+            :model-value="inputs.commitSha || ''"
             :field-config="getFieldConfig('commitSha')"
             :disabled="disabled"
             :error-message="getFieldError('commitSha')"
             @update:model-value="updateInput('commitSha', $event)"
           />
           <Phase5InputField
-            :model-value="inputs.browserOs"
+            :model-value="inputs.browserOs || ''"
             :field-config="getFieldConfig('browserOs')"
             :disabled="disabled"
             :error-message="getFieldError('browserOs')"
             @update:model-value="updateInput('browserOs', $event)"
           />
           <Phase5InputField
-            :model-value="inputs.urlRoute"
+            :model-value="inputs.urlRoute || ''"
             :field-config="getFieldConfig('urlRoute')"
             :disabled="disabled"
             :error-message="getFieldError('urlRoute')"
@@ -55,42 +55,42 @@
         </h4>
         <div class="phase5-inputs__fields">
           <Phase5InputField
-            :model-value="inputs.prdFile"
+            :model-value="inputs.prdFile || ''"
             :field-config="getFieldConfig('prdFile')"
             :disabled="disabled"
             :error-message="getFieldError('prdFile')"
             @update:model-value="updateInput('prdFile', $event)"
           />
           <Phase5InputField
-            :model-value="inputs.featureName"
+            :model-value="inputs.featureName || ''"
             :field-config="getFieldConfig('featureName')"
             :disabled="disabled"
             :error-message="getFieldError('featureName')"
             @update:model-value="updateInput('featureName', $event)"
           />
           <Phase5InputField
-            :model-value="inputs.prdGoalsRelevant"
+            :model-value="inputs.prdGoalsRelevant || ''"
             :field-config="getFieldConfig('prdGoalsRelevant')"
             :disabled="disabled"
             :error-message="getFieldError('prdGoalsRelevant')"
             @update:model-value="updateInput('prdGoalsRelevant', $event)"
           />
           <Phase5InputField
-            :model-value="inputs.prdNongoalsRelevant"
+            :model-value="inputs.prdNongoalsRelevant || ''"
             :field-config="getFieldConfig('prdNongoalsRelevant')"
             :disabled="disabled"
             :error-message="getFieldError('prdNongoalsRelevant')"
             @update:model-value="updateInput('prdNongoalsRelevant', $event)"
           />
           <Phase5InputField
-            :model-value="inputs.prdFrIds"
+            :model-value="inputs.prdFrIds || ''"
             :field-config="getFieldConfig('prdFrIds')"
             :disabled="disabled"
             :error-message="getFieldError('prdFrIds')"
             @update:model-value="updateInput('prdFrIds', $event)"
           />
           <Phase5InputField
-            :model-value="inputs.prdTypesStable"
+            :model-value="inputs.prdTypesStable || ''"
             :field-config="getFieldConfig('prdTypesStable')"
             :disabled="disabled"
             :error-message="getFieldError('prdTypesStable')"
@@ -106,28 +106,28 @@
         </h4>
         <div class="phase5-inputs__fields">
           <Phase5InputField
-            :model-value="inputs.rfcFile"
+            :model-value="inputs.rfcFile || ''"
             :field-config="getFieldConfig('rfcFile')"
             :disabled="disabled"
             :error-message="getFieldError('rfcFile')"
             @update:model-value="updateInput('rfcFile', $event)"
           />
           <Phase5InputField
-            :model-value="inputs.rfcAllowlistPaths"
+            :model-value="inputs.rfcAllowlistPaths || ''"
             :field-config="getFieldConfig('rfcAllowlistPaths')"
             :disabled="disabled"
             :error-message="getFieldError('rfcAllowlistPaths')"
             @update:model-value="updateInput('rfcAllowlistPaths', $event)"
           />
           <Phase5InputField
-            :model-value="inputs.rfcZeroInfraSummary"
+            :model-value="inputs.rfcZeroInfraSummary || ''"
             :field-config="getFieldConfig('rfcZeroInfraSummary')"
             :disabled="disabled"
             :error-message="getFieldError('rfcZeroInfraSummary')"
             @update:model-value="updateInput('rfcZeroInfraSummary', $event)"
           />
           <Phase5InputField
-            :model-value="inputs.rfcOptionalAdjustments"
+            :model-value="inputs.rfcOptionalAdjustments || ''"
             :field-config="getFieldConfig('rfcOptionalAdjustments')"
             :disabled="disabled"
             :error-message="getFieldError('rfcOptionalAdjustments')"
@@ -145,28 +145,28 @@
         </h4>
         <div class="phase5-inputs__fields">
           <Phase5InputField
-            :model-value="inputs.reproSteps"
+            :model-value="inputs.reproSteps || ''"
             :field-config="getFieldConfig('reproSteps')"
             :disabled="disabled"
             :error-message="getFieldError('reproSteps')"
             @update:model-value="updateInput('reproSteps', $event)"
           />
           <Phase5InputField
-            :model-value="inputs.expectedBehavior"
+            :model-value="inputs.expectedBehavior || ''"
             :field-config="getFieldConfig('expectedBehavior')"
             :disabled="disabled"
             :error-message="getFieldError('expectedBehavior')"
             @update:model-value="updateInput('expectedBehavior', $event)"
           />
           <Phase5InputField
-            :model-value="inputs.actualBehavior"
+            :model-value="inputs.actualBehavior || ''"
             :field-config="getFieldConfig('actualBehavior')"
             :disabled="disabled"
             :error-message="getFieldError('actualBehavior')"
             @update:model-value="updateInput('actualBehavior', $event)"
           />
           <Phase5InputField
-            :model-value="inputs.suspectedRootCause"
+            :model-value="inputs.suspectedRootCause || ''"
             :field-config="getFieldConfig('suspectedRootCause')"
             :disabled="disabled"
             :error-message="getFieldError('suspectedRootCause')"
@@ -230,7 +230,7 @@ const {
 
 // Watch for changes and emit updates
 watch(
-  inputs,
+  () => inputs.value,
   (newInputs) => {
     emit("update:modelValue", newInputs);
   },

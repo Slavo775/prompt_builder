@@ -31,10 +31,10 @@ No any, no unknown, no non-null !, no as any
 Exhaustive unions; precise exported types
 Validation Plan (Human-Runnable)
 
-pnpm -w lint
-pnpm -w typecheck
-pnpm -w test
-pnpm -w build
+[PKG_LINT]
+[PKG_TYPECHECK]
+[PKG_TEST]
+[PKG_BUILD]
 `,
   description:
     "Code review phase ensuring quality, functionality, and readiness for testing",

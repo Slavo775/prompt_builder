@@ -16,6 +16,8 @@ describe("validation", () => {
     featureName: "Test Feature",
     featureSlug: "test-feature",
     requirements: "Test requirements for the project",
+    packageManager: "pnpm",
+    isMonorepo: true,
   };
 
   describe("validateGlobalInputs", () => {

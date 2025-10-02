@@ -27,9 +27,9 @@ export const PHASE_6_CONFIG: PhaseConfig = {
     Always cite the exact file:line for the failing assertion and the code it targets, and explain why the chosen side (test or code) is wrong.
     AUTO-LOOP POLICY (KEEP FIXING UNTIL GREEN)
     After each change, conceptually re-run:
-    pnpm -w lint
-    pnpm -w typecheck
-    pnpm -w test
+    [PKG_LINT]
+    [PKG_TYPECHECK]
+    [PKG_TEST]
     Continue iterating until all three are clean. If blocked by policy/context, stop and output RFC/Questions.
     ANTI-HALLUCINATION
     Don’t invent files/exports.
@@ -47,9 +47,9 @@ export const PHASE_6_CONFIG: PhaseConfig = {
     For each failing test: state Changed Tests or Changed Logic, cite spec (or absence), and why.
     Verification
     Commands & expected:
-    pnpm -w lint → 0 errors, 0 warnings
-    pnpm -w typecheck → 0 errors
-    pnpm -w test → all passing
+    [PKG_LINT] → 0 errors, 0 warnings
+    [PKG_TYPECHECK] → 0 errors
+    [PKG_TEST] → all passing
     Code Changes (Git diff)
     Single commit-ready diff fenced with
     Auto-Loop Status

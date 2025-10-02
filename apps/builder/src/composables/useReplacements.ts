@@ -5,6 +5,7 @@ import type {
   TokenReplacementService,
   TokenType,
 } from "../config/types";
+import {generatePackageManagerCommand} from "../utils/packageManagerCommands";
 
 export function useReplacements(
   globalInputs: GlobalInputs,
@@ -15,6 +16,22 @@ export function useReplacements(
     FEATURE_NAME: globalInputs.featureName,
     FEATURE_SLUG: globalInputs.featureSlug,
     REQUIREMENTS: globalInputs.requirements,
+    PKG_LINT: generatePackageManagerCommand("lint", {
+      packageManager: globalInputs.packageManager,
+      isMonorepo: globalInputs.isMonorepo,
+    }),
+    PKG_TYPECHECK: generatePackageManagerCommand("typecheck", {
+      packageManager: globalInputs.packageManager,
+      isMonorepo: globalInputs.isMonorepo,
+    }),
+    PKG_TEST: generatePackageManagerCommand("test", {
+      packageManager: globalInputs.packageManager,
+      isMonorepo: globalInputs.isMonorepo,
+    }),
+    PKG_BUILD: generatePackageManagerCommand("build", {
+      packageManager: globalInputs.packageManager,
+      isMonorepo: globalInputs.isMonorepo,
+    }),
     ...phaseInputs,
   }));
 

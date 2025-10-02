@@ -6,6 +6,7 @@ import type {
 } from "../config/types";
 import type {GlobalInputs} from "../types";
 import {analyzeTokens} from "./tokenParser";
+import {isValidPackageManager} from "./packageManagerCommands";
 
 /**
  * Create validation error
@@ -57,6 +58,10 @@ export function validateGlobalInputs(
     FEATURE_NAME: globalInputs.featureName,
     FEATURE_SLUG: globalInputs.featureSlug,
     REQUIREMENTS: globalInputs.requirements,
+    PKG_LINT: "[PKG_LINT]", // Placeholder for validation
+    PKG_TYPECHECK: "[PKG_TYPECHECK]", // Placeholder for validation
+    PKG_TEST: "[PKG_TEST]", // Placeholder for validation
+    PKG_BUILD: "[PKG_BUILD]", // Placeholder for validation
   };
 
   const tokenAnalysis = analyzeTokens(
@@ -92,6 +97,28 @@ export function validateGlobalInputs(
       );
     }
   });
+
+  // Validate package manager selection
+  if (!isValidPackageManager(globalInputs.packageManager)) {
+    errors.push(
+      createValidationError(
+        "package-manager",
+        "PACKAGE_MANAGER",
+        "Invalid package manager selection. Must be npm, pnpm, or yarn."
+      )
+    );
+  }
+
+  // Validate monorepo flag (boolean validation)
+  if (typeof globalInputs.isMonorepo !== "boolean") {
+    errors.push(
+      createValidationError(
+        "is-monorepo",
+        "IS_MONOREPO",
+        "Monorepo setting must be true or false."
+      )
+    );
+  }
 
   return errors;
 }

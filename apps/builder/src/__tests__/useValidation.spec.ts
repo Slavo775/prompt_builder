@@ -12,6 +12,8 @@ describe("useValidation", () => {
       featureName: "Test Feature",
       featureSlug: "test-feature",
       requirements: "Test Requirements",
+      packageManager: "pnpm",
+      isMonorepo: true,
     };
 
     mockPhaseInputs = {
@@ -286,6 +288,8 @@ describe("useValidation", () => {
         featureName: "",
         featureSlug: "",
         requirements: "",
+        packageManager: "pnpm" as const,
+        isMonorepo: true,
       };
       const {validationState} = useValidation(template, emptyInputs, {});
 

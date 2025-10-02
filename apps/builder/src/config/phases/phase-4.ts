@@ -25,10 +25,10 @@ Matches PRD_[FEATURE_SLUG].md.
 Stays within RFC_[FEATURE_SLUG].md scope.
 Local/CI Commands (run)
 
-pnpm -w lint
-pnpm -w typecheck
-pnpm -w test
-pnpm -w build
+[PKG_LINT]
+[PKG_TYPECHECK]
+[PKG_TEST]
+[PKG_BUILD]
 
 
 OUTCOME

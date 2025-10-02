@@ -32,7 +32,7 @@ RFC CONTEXT (implementation guardrails)
   [RFC_ALLOWLIST_PATHS]
 - Zero-Infra-Change Plan: [RFC_ZERO_INFRA_SUMMARY]
 - Proposed infra/config adjustments: [RFC_OPTIONAL_ADJUSTMENTS] (proposal-only; DO NOT apply)
-- Validation plan: \`pnpm -w lint\`, \`pnpm -w typecheck\`, \`pnpm -w test\`, \`pnpm -w build\`
+- Validation plan: \`[PKG_LINT]\`, \`[PKG_TYPECHECK]\`, \`[PKG_TEST]\`, \`[PKG_BUILD]\`
 
 REPRO STEPS (minimal, numbered)
 1) [STEP_1]
@@ -79,10 +79,10 @@ Section 3: Code Changes (Git diff)
   - \`const results = await axe(container); expect(results).toHaveNoViolations();\`
 
 Section 4: Validation Commands (for humans/CI)
-- \`pnpm -w lint\`
-- \`pnpm -w typecheck\`
-- \`pnpm -w test\`
-- \`pnpm -w build\`
+- \`[PKG_LINT]\`
+- \`[PKG_TYPECHECK]\`
+- \`[PKG_TEST]\`
+- \`[PKG_BUILD]\`
 
 Section 5: Notes
 - Any trade-offs, follow-ups, or items that could not be completed without DN-T edits (if so, propose an RFC reference only — do not apply).
