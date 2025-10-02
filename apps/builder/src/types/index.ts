@@ -40,7 +40,11 @@ export type PhaseId = "0" | "1" | "2" | "2.5" | "3" | "4" | "5" | "6";
 // View-aware types for frontend/backend split
 export type ViewType = "frontend" | "backend";
 
-export type BackendPhaseId = "0" | "1" | "2" | "3";
+export type BackendPhaseId =
+  | "backend-0"
+  | "backend-1"
+  | "backend-2"
+  | "backend-3";
 
 export type AnyPhaseId = PhaseId | BackendPhaseId;
 
@@ -167,3 +171,108 @@ export const DEFAULT_PHASE_TEMPLATES: Record<PhaseId, string> = {
 
   "6": PHASE_CONFIGS[6].template,
 } as const;
+
+// Phase Selector Types
+export type DropdownPlacement = "top" | "bottom";
+export type DropdownState = "closed" | "opening" | "open" | "closing";
+
+export interface PhaseOption {
+  readonly id: AnyPhaseId;
+  readonly label: string;
+  readonly title: string;
+  readonly selected: boolean;
+  readonly disabled: boolean;
+}
+
+export interface PhaseSelectorProps {
+  readonly phasesList: ReadonlyArray<Phase | BackendPhase>;
+  readonly currentPhaseId: AnyPhaseId;
+  readonly viewType?: ViewType;
+  readonly disabled?: boolean;
+  readonly "aria-label"?: string;
+  readonly class?: string;
+}
+
+export interface PhaseSelectorEmits {
+  "phase-change": [phaseId: AnyPhaseId];
+  "dropdown-open": [];
+  "dropdown-close": [];
+}
+
+export interface DropdownConfig {
+  readonly placement: DropdownPlacement;
+  readonly maxHeight: number;
+  readonly itemHeight: number;
+  readonly searchable: boolean;
+}
+
+export interface KeyboardHandlers {
+  // eslint-disable-next-line no-unused-vars
+  readonly onArrowDown: (event: KeyboardEvent) => void;
+  // eslint-disable-next-line no-unused-vars
+  readonly onArrowUp: (event: KeyboardEvent) => void;
+  // eslint-disable-next-line no-unused-vars
+  readonly onEnter: (event: KeyboardEvent) => void;
+  // eslint-disable-next-line no-unused-vars
+  readonly onEscape: (event: KeyboardEvent) => void;
+  // eslint-disable-next-line no-unused-vars
+  readonly onTab: (event: KeyboardEvent) => void;
+}
+
+export interface DropdownPosition {
+  readonly top: number;
+  readonly left: number;
+  readonly width: number;
+  readonly maxHeight: number;
+  readonly placement: DropdownPlacement;
+}
+
+// Native Phase Selector Types
+export interface NativePhaseSelectorProps {
+  readonly phasesList: ReadonlyArray<Phase | BackendPhase>;
+  readonly currentPhaseId: AnyPhaseId;
+  readonly viewType?: ViewType;
+  readonly disabled?: boolean;
+  readonly label?: string;
+  readonly id?: string;
+  readonly required?: boolean;
+}
+
+export interface NativePhaseSelectorEmits {
+  "phase-change": [phaseId: AnyPhaseId];
+  focus: [event: FocusEvent];
+  blur: [event: FocusEvent];
+}
+
+export interface NativePhaseOption {
+  readonly value: AnyPhaseId;
+  readonly text: string;
+  readonly selected: boolean;
+  readonly disabled?: boolean;
+}
+
+export interface PhaseFormField {
+  readonly id: string;
+  readonly name: string;
+  readonly value: AnyPhaseId;
+  readonly required: boolean;
+  readonly valid: boolean;
+}
+
+export interface FormValidationResult {
+  readonly valid: boolean;
+  readonly valueMissing: boolean;
+  readonly customError: boolean;
+  readonly validationMessage: string;
+}
+
+export type PhaseOptionFormatter = (
+  // eslint-disable-next-line no-unused-vars
+  phase: Phase | BackendPhase,
+  // eslint-disable-next-line no-unused-vars
+  maxLength?: number
+) => {
+  readonly value: AnyPhaseId;
+  readonly text: string;
+  readonly selected: boolean;
+};
