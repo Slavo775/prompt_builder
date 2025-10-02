@@ -11,25 +11,20 @@
             {'phase-view__toggle--active': phase.overridesEnabled},
           ]"
           :aria-pressed="phase.overridesEnabled"
-          @click="toggleOverrides"
-        >
+          @click="toggleOverrides">
           {{ phase.overridesEnabled ? "Custom Template" : "Default Template" }}
         </button>
         <button
           v-if="phase.overridesEnabled"
           class="phase-view__reset"
-          @click="resetToDefault"
-        >
+          @click="resetToDefault">
           Reset to Default
         </button>
       </div>
     </div>
 
     <div class="phase-view__content">
-      <PhaseTemplateEditor
-        :phase="phase"
-        @update:template="updateTemplate"
-      />
+      <PhaseTemplateEditor :phase="phase" @update:template="updateTemplate" />
 
       <!-- Phase 5 Specialized Inputs -->
       <Phase5InputsComponent
@@ -37,8 +32,7 @@
         :model-value="phase5Inputs"
         :disabled="false"
         :show-validation="true"
-        @update:model-value="updatePhase5Inputs"
-      />
+        @update:model-value="updatePhase5Inputs" />
 
       <!-- Standard Phase Inputs -->
       <PhaseInputs
@@ -46,21 +40,19 @@
         :phase="phase"
         :global-inputs="globalInputs"
         :template="phase.template"
-        @update:phase="updatePhase"
-      />
+        @update:phase="updatePhase" />
 
       <PhasePreview
         :rendered-template="renderedTemplate"
         :last-output="phase.lastOutput"
-        @save-output="saveOutput"
-      />
+        @save-output="saveOutput" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import {computed, ref, watch} from "vue";
-import type {Phase, GlobalInputs} from "../types";
+import type {Phase, BackendPhase, GlobalInputs, ViewType} from "../types";
 import type {Phase5Inputs} from "../config/types";
 import {useReplacements} from "../composables/useReplacements";
 import {
@@ -73,14 +65,15 @@ import Phase5InputsComponent from "./Phase5Inputs.vue";
 import PhasePreview from "./PhasePreview.vue";
 
 interface Props {
-  phase: Phase;
+  phase: Phase | BackendPhase;
   globalInputs: GlobalInputs;
+  viewType?: ViewType;
 }
 
 const props = defineProps<Props>();
 
 const emit = defineEmits<{
-  "update:phase": [phase: Phase];
+  "update:phase": [phase: Phase | BackendPhase];
 }>();
 
 // Phase 5 inputs state
@@ -185,7 +178,7 @@ const updateTemplate = (template: string) => {
   emit("update:phase", updatedPhase);
 };
 
-const updatePhase = (phase: Phase) => {
+const updatePhase = (phase: Phase | BackendPhase) => {
   emit("update:phase", phase);
 };
 

@@ -1,13 +1,8 @@
 <template>
   <div class="phase-inputs">
-    <h3 class="phase-inputs__title">
-      Phase-Specific Inputs
-    </h3>
+    <h3 class="phase-inputs__title">Phase-Specific Inputs</h3>
     <div class="phase-inputs__list">
-      <template
-        v-for="(value, inputKey) in phase.inputs"
-        :key="inputKey"
-      >
+      <template v-for="(value, inputKey) in phase.inputs" :key="inputKey">
         <div class="phase-inputs__row">
           <input
             :value="value"
@@ -33,13 +28,11 @@
                 inputKey,
                 ($event.target as HTMLInputElement).value
               )
-            "
-          >
+            " />
           <button
             class="phase-inputs__remove"
             :aria-label="`Remove input ${inputKey}`"
-            @click="removeInput(inputKey)"
-          >
+            @click="removeInput(inputKey)">
             ×
           </button>
         </div>
@@ -48,8 +41,7 @@
           v-if="getFieldError(`phase-input-${inputKey}`)"
           :id="`phase-input-${inputKey}-error`"
           class="phase-inputs__error"
-          role="alert"
-        >
+          role="alert">
           {{ getFieldError(`phase-input-${inputKey}`) }}
         </div>
       </template>
@@ -58,13 +50,11 @@
           v-model="newInputKey"
           placeholder="New input key"
           class="phase-inputs__key"
-          @keyup.enter="addInput"
-        >
+          @keyup.enter="addInput" />
         <button
           :disabled="!newInputKey.trim()"
           class="phase-inputs__add-button"
-          @click="addInput"
-        >
+          @click="addInput">
           Add Input
         </button>
       </div>
@@ -74,13 +64,13 @@
 
 <script setup lang="ts">
 import {ref} from "vue";
-import type {Phase} from "../types";
+import type {Phase, BackendPhase} from "../types";
 import type {GlobalInputs} from "../types";
 import type {ValidationError} from "../config/types";
 import {useValidation} from "../composables/useValidation";
 
 interface Props {
-  phase: Phase;
+  phase: Phase | BackendPhase;
   globalInputs?: GlobalInputs;
   template?: string;
 }
@@ -98,7 +88,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  "update:phase": [phase: Phase];
+  "update:phase": [phase: Phase | BackendPhase];
 }>();
 
 const newInputKey = ref("");

@@ -17,17 +17,18 @@
 </template>
 
 <script setup lang="ts">
-import type {Phase, PhaseId} from "../types";
+import type {Phase, BackendPhase, AnyPhaseId, ViewType} from "../types";
 
 interface Props {
-  phasesList: Phase[];
-  currentPhaseId: PhaseId;
+  phasesList: (Phase | BackendPhase)[];
+  currentPhaseId: AnyPhaseId;
+  viewType?: ViewType;
 }
 
 defineProps<Props>();
 
 defineEmits<{
-  "phase-change": [phaseId: PhaseId];
+  "phase-change": [phaseId: AnyPhaseId];
 }>();
 </script>
 
@@ -89,4 +90,3 @@ defineEmits<{
   font-size: 0.875rem;
 }
 </style>
-

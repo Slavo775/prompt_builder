@@ -76,3 +76,71 @@ textarea:focus {
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+// Tab navigation styles
+.tab-navigation {
+  display: flex;
+  border-bottom: 1px solid #e5e7eb;
+  background: white;
+  padding: 0 1rem;
+}
+
+.tab-navigation__tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.tab-navigation__tab:hover:not(.tab-navigation__tab--disabled) {
+  color: #374151;
+  background: #f9fafb;
+}
+
+.tab-navigation__tab:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+  border-radius: 0.25rem;
+}
+
+.tab-navigation__tab--active {
+  color: #3b82f6;
+  border-bottom-color: #3b82f6;
+  background: #eff6ff;
+}
+
+.tab-navigation__tab--disabled {
+  color: #d1d5db;
+  cursor: not-allowed;
+}
+
+.tab-navigation__icon {
+  font-size: 1rem;
+}
+
+.tab-navigation__label {
+  font-weight: inherit;
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .tab-navigation__tab--active {
+    border-bottom-width: 3px;
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .tab-navigation__tab {
+    transition: none;
+  }
+}

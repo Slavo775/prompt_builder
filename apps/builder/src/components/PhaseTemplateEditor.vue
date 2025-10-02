@@ -6,18 +6,17 @@
       :placeholder="'Enter your template with [TOKEN] placeholders...'"
       :rows="12"
       :disabled="!phase.overridesEnabled"
-      help-text="Use [TOKEN] syntax for placeholders. Available tokens: PROJECT_NAME, FEATURE_NAME, FEATURE_SLUG, OWNER, STACK, DATE_ISO"
-    />
+      help-text="Use [TOKEN] syntax for placeholders. Available tokens: PROJECT_NAME, FEATURE_NAME, FEATURE_SLUG, OWNER, STACK, DATE_ISO" />
   </div>
 </template>
 
 <script setup lang="ts">
 import {ref, watch} from "vue";
-import type {Phase} from "../types";
+import type {Phase, BackendPhase} from "../types";
 import JsonEditor from "./JsonEditor.vue";
 
 interface Props {
-  phase: Phase;
+  phase: Phase | BackendPhase;
 }
 
 const props = defineProps<Props>();
@@ -45,4 +44,3 @@ watch(
   grid-column: 1 / -1;
 }
 </style>
-

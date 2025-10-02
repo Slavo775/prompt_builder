@@ -1,8 +1,8 @@
-import type {PhaseId} from "../types";
+import type {AnyPhaseId, PhaseId} from "../types";
 
 // Configuration Types
 export interface PhaseConfig {
-  id: PhaseId;
+  id: AnyPhaseId;
   title: string;
   template: string;
   description: string;

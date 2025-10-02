@@ -22,8 +22,11 @@
 </template>
 
 <script setup lang="ts">
+import type {ViewType} from "../types";
+
 interface Props {
   hasUnsavedChanges: boolean;
+  currentView?: ViewType;
 }
 
 defineProps<Props>();
@@ -78,4 +81,3 @@ defineEmits<{
   cursor: not-allowed;
 }
 </style>
-

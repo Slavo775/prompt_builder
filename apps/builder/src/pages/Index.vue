@@ -2,33 +2,40 @@
   <div class="app">
     <AppHeader
       :has-unsaved-changes="hasUnsavedChanges"
+      :current-view="currentView"
       @export="exportData"
-      @import="importData"
-    />
+      @import="importData" />
+
+    <TabNavigation
+      :current-view="currentView"
+      @view-change="handleViewChange" />
 
     <div class="app__main">
-      <aside class="app__sidebar">
-        <PhaseNavigation
-          :phases-list="phasesList"
-          :current-phase-id="currentPhaseId"
-          @phase-change="currentPhaseId = $event"
-        />
+      <ViewContainer :view-type="currentView" :view-state="currentViewStateRef">
+        <template #default="{viewType}">
+          <aside class="app__sidebar">
+            <PhaseNavigation
+              :phases-list="phasesList"
+              :current-phase-id="currentPhaseId"
+              :view-type="viewType"
+              @phase-change="handlePhaseChange" />
 
-        <GlobalInputs
-          :global-inputs="globalInputs"
-          :template="currentPhase.template"
-          :phase-inputs="currentPhase.inputs"
-          @update:global-inputs="updateGlobalInputs"
-        />
-      </aside>
+            <GlobalInputs
+              :global-inputs="globalInputs"
+              :template="currentPhase.template"
+              :phase-inputs="currentPhase.inputs"
+              @update:global-inputs="updateGlobalInputs" />
+          </aside>
 
-      <main class="app__content">
-        <PhaseView
-          :phase="currentPhase"
-          :global-inputs="globalInputs"
-          @update:phase="updateCurrentPhase"
-        />
-      </main>
+          <main class="app__content">
+            <PhaseView
+              :phase="currentPhase"
+              :global-inputs="globalInputs"
+              :view-type="viewType"
+              @update:phase="updateCurrentPhase" />
+          </main>
+        </template>
+      </ViewContainer>
     </div>
 
     <input
@@ -36,40 +43,81 @@
       type="file"
       accept=".json"
       style="display: none"
-      @change="handleFileImport"
-    >
+      @change="handleFileImport" />
   </div>
 </template>
 
 <script setup lang="ts">
 import {ref, computed} from "vue";
 import {usePhaseBuilderStorage} from "../composables/useLocalStorage";
-import {usePhases} from "../composables/usePhases";
+import {useViewManagement} from "../composables/useViewManagement";
+import {useViewAwarePhases} from "../composables/useViewAwarePhases";
 import AppHeader from "../components/AppHeader.vue";
+import TabNavigation from "../components/TabNavigation.vue";
+import ViewContainer from "../components/ViewContainer.vue";
 import PhaseNavigation from "../components/PhaseNavigation.vue";
 import GlobalInputs from "../components/GlobalInputs.vue";
 import PhaseView from "../components/PhaseView.vue";
-import type {Phase, GlobalInputs as GlobalInputsType} from "../types";
+import type {
+  Phase,
+  BackendPhase,
+  GlobalInputs as GlobalInputsType,
+  ViewType,
+  AnyPhaseId,
+  ViewAwareExportData,
+} from "../types";
 
 const storage = usePhaseBuilderStorage();
 const fileInput = ref<HTMLInputElement>();
 
 const {
-  currentPhaseId,
-  updatePhase,
-  phasesList,
-  currentPhase,
+  currentView,
+  getCurrentViewState,
+  updateCurrentViewState,
+  switchView,
   hasUnsavedChanges,
-  exportPhases,
-  importPhases,
-} = usePhases(storage.value.phases, storage.value.globalInputs);
+} = useViewManagement(storage);
+
+const globalInputsRef = computed({
+  get: () => storage.value.globalInputs,
+  set: (value) => {
+    storage.value.globalInputs = value;
+  },
+});
+
+// Create a reactive reference to the current view state
+const currentViewStateRef = computed(() => getCurrentViewState());
+
+const {
+  currentPhase,
+  phasesList,
+  updatePhase,
+  switchPhase,
+  exportViewData,
+  importViewData,
+} = useViewAwarePhases(
+  currentViewStateRef,
+  currentView,
+  globalInputsRef,
+  updateCurrentViewState
+);
+
+const currentPhaseId = computed(() => currentViewStateRef.value.currentPhaseId);
 
 const globalInputs = computed(() => ({
   ...storage.value.globalInputs,
   requirements: storage.value.globalInputs.requirements || "",
 }));
 
-const updateCurrentPhase = (updatedPhase: Phase) => {
+const handleViewChange = (viewType: ViewType) => {
+  switchView(viewType);
+};
+
+const handlePhaseChange = (phaseId: AnyPhaseId) => {
+  switchPhase(phaseId);
+};
+
+const updateCurrentPhase = (updatedPhase: Phase | BackendPhase) => {
   updatePhase(updatedPhase.id, updatedPhase);
 };
 
@@ -81,7 +129,7 @@ const updateGlobalInputs = (newGlobalInputs: GlobalInputsType) => {
 };
 
 const exportData = () => {
-  const data = exportPhases();
+  const data = exportViewData();
   const blob = new Blob([JSON.stringify(data, null, 2)], {
     type: "application/json",
   });
@@ -110,8 +158,10 @@ const handleFileImport = (event: Event) => {
   const reader = new FileReader();
   reader.onload = (e) => {
     try {
-      const data = JSON.parse(e.target?.result as string);
-      importPhases(data);
+      const data = JSON.parse(
+        e.target?.result as string
+      ) as ViewAwareExportData;
+      importViewData(data);
       target.value = "";
     } catch (error) {
       console.error("Failed to import data:", error);
