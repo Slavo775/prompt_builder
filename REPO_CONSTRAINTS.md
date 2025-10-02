@@ -1,181 +1,78 @@
-# Repository Constraints
+# 1. Role & Scope
 
-**This document is human-owned. AI must follow it in all phases.**
+- Owner: Human maintainers
+- Audience: Everyone (including AI)
+- Goal: Keep changes safe, consistent, and easy to review.
+- Source of truth: RULESET.md (active items). If this file conflicts with RULESET.md, RULESET.md wins.
 
-## Overview
+# 2. Do-Not-Touch (DN-T)
 
-This repository contains a Vue.js-based prompt builder application with strict constraints on infrastructure and configuration modifications. All AI interactions must adhere to these constraints without exception.
+Do-Not-Touch (DN-T) Files & Folders
+Edits to anything below require an RFC + explicit human approval. AI MUST NOT modify these.
+Package & Workspaces:
+package.json, lockfiles (pnpm-lock.yaml, package-lock.json, yarn.lock), pnpm-workspace.yaml
+TS/JS Project Config:
+tsconfig*.json, jsconfig*.json
+Build/Tooling Config:
+next.config._ (and any framework build config), babel.config._, .babelrc, vite.config._, rollup.config._, tsup.config._, webpack.config._, postcss.config._, tailwind.config._, Emotion/Babel plugins config, Storybook config (.storybook/**)
+Lint/Format/Editor:
+.eslintrc*, .prettierrc*, .stylelint*, .lintstagedrc*, .commitlintrc\*, .editorconfig
+VCS / CI / Hooks:
+.gitignore, .gitattributes, .mailmap, .husky/, .github/** (workflows), .gitlab-ci.yml, .circleci/, turbo.json, nx.json
+Infra / DevOps:
+Dockerfile*, docker-compose*, kubernetes/, terraform/, infra/_
+Testing Runners:
+playwright.config._, vitest.config._, jest.config._, cypress.config._
+Dependency Mgmt:
+dependabot.yml, renovate.json, .npmrc, .nvmrc
+IDE / Project Meta:
+.vscode/, .idea/
+Env & Secrets:
+.env_, .env._.example, config/.env._
+Other root-level dotfiles & configs:
+any .\* at repo root not explicitly listed above
+No exceptions: DN-T edits land only via an approved RFC PR authored/approved by a human.
 
-## Do-Not-Touch (DN-T) Files & Folders
+# 3. Output & RFC Policy
 
-**CRITICAL: These files/folders require RFC + explicit human approval. AI MUST NOT modify them under any circumstances.**
+- Output must be commit-ready and reviewable as a Git diff. No DN-T edits in normal PRs.
+- Infra/config/tooling changes: **proposal-only** via /rfcs/\*, merged after explicit human approval (R-001, R-024).
 
-### Package Management & Dependencies
+# 4. TypeScript (strict)
 
-- `package.json`
-- `pnpm-lock.yaml`, `package-lock.json`, `yarn.lock`
-- `pnpm-workspace.yaml`
-- `.npmrc`, `.nvmrc`
+- Strict on; TS errors are blockers. No `any`/`unknown` (in exports), no non-null `!`, no "as any".
+- Exhaustive discriminated unions with `never` guards.
+- Public API: minimal, precise; export values **and** types at boundaries; prefer unions over enums. (R-004–R-006, R-022, R-023)
 
-### TypeScript & JavaScript Configuration
+# 5. React/UI Practices
 
-- `tsconfig*.json`
-- `jsconfig*.json`
+- Layering: separate UI and business logic; one-way imports (containers/hooks → ui). (R-002, R-021, R-028)
+- Hooks: top-level only; complete deps; prefer no Effects; side-effects only for external sync. (R-007–R-009)
+- Rendering/state: minimal/derived/colocated state; stable unique keys; avoid heavy work in render. (R-009–R-011, R-016)
+- A11y: semantic HTML; keyboard/focus; WCAG 2.1 AA; tests with jest-axe. (R-012–R-013)
+- Styling: use design tokens; component-scoped styles. Error boundaries for critical areas; skeletons over spinners. (R-017, R-026, R-029)
 
-### Build & Framework Configuration
+# 6. Testing & Coverage
 
-- `vite.config.*`
-- `rollup.config.*`
-- `tsup.config.*`
-- `webpack.config.*`
-- `postcss.config.*`
-- `tailwind.config.*`
-- `next.config.*`
-- `babel.config.*`, `.babelrc`
+- Vitest + Testing Library; behavior over implementation; avoid snapshot-only for dynamic UI. (R-014)
+- A11y smoke: `expect(await axe(container)).toHaveNoViolations()` for interactive UI. (R-013)
+- Coverage: Lines ≥ 85%, Branches ≥ 80%; critical paths targeted to 100%. (R-015)
 
-### Linting & Code Quality
+# 7. Security, i18n, Analytics
 
-- `.eslintrc*`, `eslint.config.*`
-- `.prettierrc*`
-- `.stylelint*`
-- `.lintstagedrc*`
-- `.commitlintrc*`
-- `.editorconfig`
+- Security: never commit secrets; validate inputs; least-privilege client APIs. (R-020)
+- i18n: use existing system; no hardcoded copy; plural/RTL/date/number formatting. (R-018)
+- Analytics: typed events; no PII; document names/schemas. (R-019)
 
-### Git & Version Control
+# 8. Conventions & PR Hygiene
 
-- `.gitignore`
-- `.gitattributes`
-- `.mailmap`
+- Structure: `ui/`, `containers/`, `hooks/`, `domain/`, `services/`, `api/`; tests colocated; public API via `index.ts`. (R-021)
+- PRs: small, single-purpose, with rationale; clean diffs; TODOs must link tickets. (R-025)
 
-### CI/CD & Automation
+# 9. AI Participation
 
-- `.husky/`
-- `.github/**` (workflows)
-- `.gitlab-ci.yml`
-- `.circleci/`
-- `dependabot.yml`
-- `renovate.json`
+- Must comply with this file and RULESET.md; may draft RFCs and propose diffs; **must not** apply DN-T changes. (R-001, R-031)
 
-### Infrastructure & Deployment
+# 10. Changelog
 
-- `Dockerfile*`
-- `docker-compose*`
-- `kubernetes/`
-- `terraform/`
-- `infra/*`
-
-### Testing Configuration
-
-- `playwright.config.*`
-- `vitest.config.*`
-- `jest.config.*`
-- `cypress.config.*`
-
-### Build Tools & Monorepo
-
-- `turbo.json`
-- `nx.json`
-
-### IDE & Editor Configuration
-
-- `.vscode/`
-- `.idea/`
-
-### Environment & Configuration
-
-- `.env*`
-- `.env.*.example`
-- `config/.env.*`
-
-### Other Configuration
-
-- `emotion/babel` plugins config
-- `storybook` config (`.storybook/**`)
-- Any other root-level dotfiles (`.*`) and configuration files
-
-## Development Standards
-
-### TypeScript Rules
-
-- **Strict mode**: All TypeScript configurations must use strict mode
-- **No `any`**: Explicitly forbidden; use proper typing
-- **No `unknown`**: Use specific types or proper type guards
-- **No non-null assertion (`!`)**: Use proper null checks
-- **No `as any`**: Use proper type assertions or type guards
-- **Exhaustive unions**: All union types must be exhaustive
-- **Precise exported types**: All exported types must be precisely defined
-
-### Vue.js/UI Rules
-
-- **Typed props**: All component props must be properly typed
-- **Correct hook dependencies**: All Vue composition API hooks must have correct dependency arrays
-- **Basic accessibility**: Components must meet basic a11y requirements (ARIA labels, keyboard navigation, etc.)
-
-### Testing Rules
-
-- **Framework**: Use `vitest` and `@testing-library/vue`
-- **Accessibility testing**: Use `jest-axe` for a11y validation
-- **Coverage thresholds** (recommended):
-  - Statements: 80%
-  - Branches: 75%
-  - Functions: 80%
-  - Lines: 80%
-
-## RFC Policy
-
-### Infrastructure & Configuration Changes
-
-- All changes to DN-T files must be proposed in RFC documents
-- RFCs must include:
-  - Justification for the change
-  - Impact analysis
-  - Migration strategy (if applicable)
-  - Rollback plan
-- **AI MUST NEVER apply infrastructure/config changes without explicit human approval**
-
-### RFC Process
-
-1. Create RFC document in appropriate location
-2. Submit for human review
-3. Wait for explicit approval
-4. Implement only after approval received
-
-## Output Policy
-
-### Git-Ready Implementation
-
-- All code changes must be commit-ready Git diffs
-- No DN-T file modifications allowed
-- All changes must pass existing linting and type checking
-
-### Code Quality Gates
-
-- All code must pass ESLint rules
-- TypeScript compilation must succeed
-- Tests must pass
-- No console errors or warnings
-
-## Enforcement
-
-### AI Compliance
-
-- AI must check this document before making any changes
-- AI must refuse requests that violate these constraints
-- AI must suggest RFC process for infrastructure changes
-
-### Human Override
-
-- Only humans can modify this document
-- Only humans can approve RFC exceptions
-- Emergency changes require documented justification
-
-## Contact
-
-For questions about these constraints or to propose changes, contact the repository maintainers.
-
----
-
-**Last Updated**: Generated by Staff Engineer
-**Version**: 1.0
-**Status**: Active
+- 2025-10-02 — Initial creation of repository constraints file based on RULESET.md active rules.
