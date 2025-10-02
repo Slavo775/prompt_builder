@@ -227,6 +227,7 @@
 </template>
 
 <script setup lang="ts">
+import {toRef} from "vue";
 import type {GlobalInputs, PackageManager} from "../types";
 import type {ValidationError} from "../config/types";
 import {useValidation} from "../composables/useValidation";
@@ -247,11 +248,11 @@ const emit = defineEmits<{
   "update:globalInputs": [globalInputs: GlobalInputs];
 }>();
 
-// Use validation composable
+// Use validation composable with reactive props
 const {validationState} = useValidation(
-  props.template,
-  props.globalInputs,
-  props.phaseInputs
+  toRef(props, "template"),
+  toRef(props, "globalInputs"),
+  toRef(props, "phaseInputs")
 );
 
 // Update global input function

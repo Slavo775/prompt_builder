@@ -67,7 +67,7 @@ export function useViewAwarePhases(
     const viewType = viewTypeRef.value;
     const phaseIds =
       viewType === "backend"
-        ? ["backend-0", "backend-1", "backend-2", "backend-3"]
+        ? ["0", "1", "2", "3"]
         : ["0", "1", "2", "2.5", "3", "4", "5", "6"];
 
     return phaseIds.map((id) => getPhase(id as AnyPhaseId));
@@ -108,8 +108,7 @@ export function useViewAwarePhases(
     const backendData: ViewExportData = {
       viewType: "backend",
       phases: viewType === "backend" ? viewState.phases : {},
-      currentPhaseId:
-        viewType === "backend" ? viewState.currentPhaseId : "backend-0",
+      currentPhaseId: viewType === "backend" ? viewState.currentPhaseId : "0",
       lastModified: viewState.lastModified,
     };
 

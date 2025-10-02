@@ -1,7 +1,7 @@
 import type {PhaseConfig} from "../types";
 
 export const BACKEND_PHASE_2_CONFIG: PhaseConfig = {
-  id: "backend-2",
+  id: "2",
   title: "Business Logic & Service Architecture",
   template: `ROLE
 You are a Senior Backend Engineer implementing business logic for [PROJECT_NAME].

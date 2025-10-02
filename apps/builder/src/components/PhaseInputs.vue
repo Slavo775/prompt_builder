@@ -73,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {ref, toRef, computed} from "vue";
 import type {Phase, BackendPhase} from "../types";
 import type {GlobalInputs} from "../types";
 import type {ValidationError} from "../config/types";
@@ -103,11 +103,11 @@ const emit = defineEmits<{
 
 const newInputKey = ref("");
 
-// Use validation composable
+// Use validation composable with reactive props
 const {validationState} = useValidation(
-  props.template,
-  props.globalInputs,
-  props.phase.inputs
+  toRef(props, "template"),
+  toRef(props, "globalInputs"),
+  computed(() => props.phase.inputs)
 );
 
 // Get error message for a specific field

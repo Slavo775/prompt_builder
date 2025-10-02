@@ -1,7 +1,7 @@
 import type {PhaseConfig} from "../types";
 
 export const BACKEND_PHASE_1_CONFIG: PhaseConfig = {
-  id: "backend-1",
+  id: "1",
   title: "Database Schema & Data Modeling",
   template: `ROLE
 You are a Database Architect designing data models for [PROJECT_NAME].

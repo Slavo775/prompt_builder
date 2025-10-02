@@ -42,6 +42,8 @@ describe("PhaseInputs", () => {
       featureName: "Test Feature",
       featureSlug: "test-feature",
       requirements: "Test requirements for the project",
+      packageManager: "pnpm",
+      isMonorepo: false,
     };
   });
 
@@ -72,10 +74,10 @@ describe("PhaseInputs", () => {
     expect(inputs).toHaveLength(2);
 
     const customInput = inputs.find(
-      (input) => input.element.value === "Custom Value"
+      (input) => (input.element as HTMLInputElement).value === "Custom Value"
     );
     const anotherInput = inputs.find(
-      (input) => input.element.value === "Another Value"
+      (input) => (input.element as HTMLInputElement).value === "Another Value"
     );
 
     expect(customInput).toBeDefined();
@@ -129,10 +131,11 @@ describe("PhaseInputs", () => {
           ],
           warnings: [],
         },
-        effect: vi.fn(),
-        [Symbol.for("ComputedRefSymbol")]: true,
-        [Symbol.for("RefSymbol")]: true,
-      },
+        //eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any,
+      validateInput: vi.fn(),
+      validateAll: vi.fn(),
+      clearValidation: vi.fn(),
     });
 
     const wrapper = mount(PhaseInputs, {
@@ -167,10 +170,11 @@ describe("PhaseInputs", () => {
           ],
           warnings: [],
         },
-        effect: vi.fn(),
-        [Symbol.for("ComputedRefSymbol")]: true,
-        [Symbol.for("RefSymbol")]: true,
-      },
+        //eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any,
+      validateInput: vi.fn(),
+      validateAll: vi.fn(),
+      clearValidation: vi.fn(),
     });
 
     const wrapper = mount(PhaseInputs, {
@@ -181,7 +185,9 @@ describe("PhaseInputs", () => {
 
     const customInput = wrapper
       .findAll(".phase-inputs__value")
-      .find((input) => input.element.value === "Custom Value");
+      .find(
+        (input) => (input.element as HTMLInputElement).value === "Custom Value"
+      );
 
     expect(customInput?.classes()).toContain("phase-inputs__value--error");
     expect(customInput?.attributes("aria-invalid")).toBe("true");
@@ -198,10 +204,11 @@ describe("PhaseInputs", () => {
           errors: [],
           warnings: [],
         },
-        effect: vi.fn(),
-        [Symbol.for("ComputedRefSymbol")]: true,
-        [Symbol.for("RefSymbol")]: true,
-      },
+        //eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any,
+      validateInput: vi.fn(),
+      validateAll: vi.fn(),
+      clearValidation: vi.fn(),
     });
 
     const wrapper = mount(PhaseInputs, {
@@ -225,10 +232,11 @@ describe("PhaseInputs", () => {
           errors: [],
           warnings: [],
         },
-        effect: vi.fn(),
-        [Symbol.for("ComputedRefSymbol")]: true,
-        [Symbol.for("RefSymbol")]: true,
-      },
+        //eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any,
+      validateInput: vi.fn(),
+      validateAll: vi.fn(),
+      clearValidation: vi.fn(),
     }));
     useValidation.mockImplementation(mockUseValidationInstance);
 
@@ -242,11 +250,21 @@ describe("PhaseInputs", () => {
       },
     });
 
-    expect(mockUseValidationInstance).toHaveBeenCalledWith(
-      template,
-      mockGlobalInputs,
-      mockPhase.inputs
-    );
+    // Verify that useValidation was called with reactive refs
+    expect(mockUseValidationInstance).toHaveBeenCalledTimes(1);
+    const calls = mockUseValidationInstance.mock.calls;
+    if (calls.length > 0 && calls[0].length >= 3) {
+      const [templateArg, globalInputsArg, phaseInputsArg] =
+        calls[0] as unknown as [
+          {value: string},
+          {value: typeof mockGlobalInputs},
+          {value: typeof mockPhase.inputs}
+        ];
+      // Check that the arguments are reactive refs with correct values
+      expect(templateArg?.value).toBe(template);
+      expect(globalInputsArg?.value).toEqual(mockGlobalInputs);
+      expect(phaseInputsArg?.value).toEqual(mockPhase.inputs);
+    }
   });
 
   it("should have proper accessibility attributes for error states", async () => {
@@ -267,10 +285,11 @@ describe("PhaseInputs", () => {
           ],
           warnings: [],
         },
-        effect: vi.fn(),
-        [Symbol.for("ComputedRefSymbol")]: true,
-        [Symbol.for("RefSymbol")]: true,
-      },
+        //eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any,
+      validateInput: vi.fn(),
+      validateAll: vi.fn(),
+      clearValidation: vi.fn(),
     });
 
     const wrapper = mount(PhaseInputs, {
@@ -281,7 +300,9 @@ describe("PhaseInputs", () => {
 
     const customInput = wrapper
       .findAll(".phase-inputs__value")
-      .find((input) => input.element.value === "Custom Value");
+      .find(
+        (input) => (input.element as HTMLInputElement).value === "Custom Value"
+      );
     const errorMessage = wrapper.find("#phase-input-CUSTOM_TOKEN-error");
 
     if (customInput) {

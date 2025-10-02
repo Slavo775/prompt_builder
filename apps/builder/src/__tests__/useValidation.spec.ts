@@ -1,4 +1,5 @@
 import {describe, it, expect, beforeEach} from "vitest";
+import {ref, nextTick} from "vue";
 import {useValidation} from "../composables/useValidation";
 import type {GlobalInputs} from "../types";
 
@@ -254,6 +255,51 @@ describe("useValidation", () => {
       );
 
       expect(newValidationState.value.isValid).toBe(false);
+    });
+
+    it("should clear validation errors when required inputs are filled", async () => {
+      const template = "Project: [PROJECT_NAME], Feature: [FEATURE_NAME]";
+
+      // Start with empty required inputs
+      const emptyInputs: GlobalInputs = {
+        projectName: "",
+        featureName: "",
+        featureSlug: "test-feature",
+        requirements: "Test requirements",
+        packageManager: "pnpm",
+        isMonorepo: false,
+      };
+
+      const globalInputsRef = ref(emptyInputs);
+      const {validationState} = useValidation(
+        template,
+        globalInputsRef,
+        mockPhaseInputs
+      );
+
+      // Initially should have validation errors for empty required fields
+      expect(validationState.value.isValid).toBe(false);
+      expect(validationState.value.errors).toHaveLength(2);
+      expect(
+        validationState.value.errors.some((err) => err.field === "project-name")
+      ).toBe(true);
+      expect(
+        validationState.value.errors.some((err) => err.field === "feature-name")
+      ).toBe(true);
+
+      // Fill in the required inputs
+      globalInputsRef.value = {
+        ...emptyInputs,
+        projectName: "Test Project",
+        featureName: "Test Feature",
+      };
+
+      // Wait for reactivity to update
+      await nextTick();
+
+      // Validation errors should be cleared
+      expect(validationState.value.isValid).toBe(true);
+      expect(validationState.value.errors).toHaveLength(0);
     });
   });
 

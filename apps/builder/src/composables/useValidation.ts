@@ -1,4 +1,4 @@
-import {computed, ref, watch} from "vue";
+import {computed, ref, watch, unref} from "vue";
 import type {
   ValidationState,
   ValidationError,
@@ -8,9 +8,11 @@ import type {GlobalInputs} from "../types";
 import {validateAllInputs, validateInputField} from "../utils/validation";
 
 export function useValidation(
-  template: string,
-  globalInputs: GlobalInputs,
-  phaseInputs: Record<string, string>
+  template: string | import("vue").Ref<string>,
+  globalInputs: GlobalInputs | import("vue").Ref<GlobalInputs>,
+  phaseInputs:
+    | Record<string, string>
+    | import("vue").Ref<Record<string, string>>
 ): UseValidationReturn {
   const validationState = ref<ValidationState>({
     isValid: true,
@@ -20,7 +22,11 @@ export function useValidation(
 
   // Computed validation state that updates when inputs or template change
   const computedValidationState = computed(() => {
-    return validateAllInputs(template, globalInputs, phaseInputs);
+    return validateAllInputs(
+      unref(template),
+      unref(globalInputs),
+      unref(phaseInputs)
+    );
   });
 
   // Watch for changes and update validation state
@@ -40,7 +46,7 @@ export function useValidation(
     const token = field.replace(/-/g, "_").toUpperCase();
 
     // Check if this is a required token in the template
-    const templateTokens = extractTokensFromTemplate(template);
+    const templateTokens = extractTokensFromTemplate(unref(template));
     const isRequired = templateTokens.includes(token);
 
     return validateInputField(field, value, token, isRequired);
@@ -50,7 +56,11 @@ export function useValidation(
    * Validate all inputs
    */
   const validateAll = (): ValidationState => {
-    const state = validateAllInputs(template, globalInputs, phaseInputs);
+    const state = validateAllInputs(
+      unref(template),
+      unref(globalInputs),
+      unref(phaseInputs)
+    );
     validationState.value = state;
     return state;
   };

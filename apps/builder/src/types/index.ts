@@ -40,11 +40,7 @@ export type PhaseId = "0" | "1" | "2" | "2.5" | "3" | "4" | "5" | "6";
 // View-aware types for frontend/backend split
 export type ViewType = "frontend" | "backend";
 
-export type BackendPhaseId =
-  | "backend-0"
-  | "backend-1"
-  | "backend-2"
-  | "backend-3";
+export type BackendPhaseId = "0" | "1" | "2" | "3";
 
 export type AnyPhaseId = PhaseId | BackendPhaseId;
 

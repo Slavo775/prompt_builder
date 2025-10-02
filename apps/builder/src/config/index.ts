@@ -31,10 +31,10 @@ export const PHASE_CONFIGS: Record<PhaseId, PhaseConfig> = {
 
 // Export backend phase configurations
 export const BACKEND_PHASE_CONFIGS: Record<BackendPhaseId, PhaseConfig> = {
-  "backend-0": BACKEND_PHASE_0_CONFIG,
-  "backend-1": BACKEND_PHASE_1_CONFIG,
-  "backend-2": BACKEND_PHASE_2_CONFIG,
-  "backend-3": BACKEND_PHASE_3_CONFIG,
+  "0": BACKEND_PHASE_0_CONFIG,
+  "1": BACKEND_PHASE_1_CONFIG,
+  "2": BACKEND_PHASE_2_CONFIG,
+  "3": BACKEND_PHASE_3_CONFIG,
 };
 
 // Unified phase config access

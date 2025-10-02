@@ -1,7 +1,7 @@
 import type {PhaseConfig} from "../types";
 
 export const BACKEND_PHASE_3_CONFIG: PhaseConfig = {
-  id: "backend-3",
+  id: "3",
   title: "System Architecture & Performance",
   template: `ROLE
 You are a Solutions Architect designing scalable systems for [PROJECT_NAME].

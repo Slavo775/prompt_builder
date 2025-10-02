@@ -1,7 +1,7 @@
 import type {PhaseConfig} from "../types";
 
 export const BACKEND_PHASE_0_CONFIG: PhaseConfig = {
-  id: "backend-0",
+  id: "0",
   title: "API Design & OpenAPI Specification",
   template: `ROLE
 You are a Senior Backend Engineer designing RESTful APIs for [PROJECT_NAME].
